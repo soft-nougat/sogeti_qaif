@@ -13,13 +13,11 @@ and ethical requirements
 #  st.session_state.counter = 0
 
 import streamlit as st
-import streamlit.components.v1 as components
-import pandas as pd
-import base64
 from PIL import Image
 import helper as help
         
 # app setup
+st.set_option('deprecation.showPyplotGlobalUse', False)
 try:
     
     # Main panel setup
@@ -54,7 +52,7 @@ try:
         if step == 'High Level information':
             
             help.header("Theoretical basis",
-                    is_sidebar = False)
+                        is_sidebar = False)
              
             help.set_bg_hack('main_bg.png')
             
@@ -213,101 +211,194 @@ try:
                          use_column_width=True)
         
         help.header("Technical Examples",
-                    is_sidebar = False)
+                    is_sidebar = True)
         
-        step = st.sidebar.radio("Select Problem statement",
-                                ('Dataset bias',
-                                 'Model interpretability', 
-                                 'Model adequacy',
-                                 'AI Model version control',
-                                 'Data version control'))
+        example = st.sidebar.radio("Select Problem statement",
+                                    ('Dataset bias',
+                                     'Model interpretability', 
+                                     'Model adequacy',
+                                     'AI Model version control',
+                                     'Data version control'))
         
-        if step == 'Dataset bias':
+        if example == 'Dataset bias':
             
             help.set_bg_hack('gate2_bg.png')
             
+            help.header("Dataset Bias",
+                        is_sidebar = False)
+        
+            data = st.sidebar.radio("Select Data Type",
+                                    ('Tabular',
+                                     'Text', 
+                                     'Images'))
+            
             bias_g1 = """
-             Understanding bias in the dataset and the model is the first step in creating a fair ML model. 
-             After bias is detected, bias correction methods should be chosen accordingly. 
-             Once the bias is mitigated, metrics can be calculated to test if the dataset is fair.
+             <p><b>Introduction</b></p>
+             Imbalanced datasets pose a challenge for training predictive models as most of 
+             the algorithms to train these models are not designed to handle class imbalance. 
+             This leads to poor predictive results, as the rules learned from the data by 
+             the model are not representative for the real world or the broader picture. 
+             Most AI algorithms learn a mapping between the input-data and the prediction. 
+             When the classes presented to the model are imbalanced, it can not accurately 
+             learn an accurate mapping, especially towards minority classes. 
+             Essentially, you could say that a bias inthe data generally results in a 
+             biased model. This bias is a threat to external validity – it limits 
+             the generalizability of your findings to a broader group of people, 
+             which in many cases is not justundesirable for the accuracy of your model 
+             but also creates unwanted breaches of ethicalstandards.
+             In practice, not detecting and dealing with class imbalance could 
+             for example result in modelsthat are racist, sexist or discriminate 
+             based on other sensitive properties such as age, religionand gender 
+             among other factors. For instance, think of a model that because of 
+             skewed dataunfairly predicts people with certain skin colours to have 
+             a higher rate of recidivism. Or take 
+             <a href="https://algorithmwatch.org/en/google-vision-racism/">this example</a>
+             where Google's computer vision AI produced labels starkly different depending
+             on skintone on given images.
+             On this page we first explain potential causes of class imbalance, followed by 
+             a brief exampleand methods to deal with this problem adequately.
+             <p><b>Causes of Class Imbalance</b></p>
+             Class imbalance can be caused by multiple factors.
+             One of them simplymeasurement errors which cause a deviation between the
+             A sample is a subset of individuals from a larger population. This allows 
+             you to learn thecharacteristics of a population if the sample actually 
+             reflects the population.
+             biased sampling, measurement errors
+             people with specific characteristics are more likely toagree to take part in the study.
+             Sampling because large set
+             Sampling because subset of data fortraining
              """
               
             help.expander('Understanding the problem',
                           bias_g1)
             
-            bias_g2 = """
-             Use stastical methods (EDA) to detect: Sampling bias, group attribution bias, 
-             omitted variable bias. 
-             Use correction methods like: Sampling and re-weighting. 
-             To correct bias in the model use: adversarial debiasing, reject-object classification.
-             """
-            
-            help.expander('Data Understanding',
-                          bias_g2)
-            
-            expander = st.beta_expander('Data Preparation', expanded=False)
-    
-            with expander:
+            if data == 'Tabular':
                 
-                exp_text = """
-                The fairlearn.metrics module provides the means to assess fairness-related 
-                metrics for models. This applies for any kind of model that users may already 
-                use, but also for models created with mitigation techniques from the 
-                Mitigation section. The Fairlearn dashboard provides a visual way to 
-                compare metrics between models as well as compare metrics for 
-                different groups on a single model.
-                <p> Recall score for ungrouped metrics </p>
-                A measure of whether the model finds all the positive cases in the 
-                input data. The scikit-learn package implements this in 
-                sklearn.metrics.recall_score().
+                tabular_intro = """
+                <p>Keywords: Class imbalance, Normalization, Sampling, Stratisfied, Bias, Tabular data</p>
+                <p>Packages used: Pandas, SKLearn</p>
+                <p>Example dataset: <a href = https://github.com/datasciencedojo/datasets/blob/master/titanic.csv>Titanic seaborn</a></p>
+                <p>Similar packages to prevent class imbalance: Fairlearn</p>
                 """
                 
-                help.sub_text(exp_text)
+                help.sub_text(tabular_intro)
                 
-                with st.echo():
+                expander = st.beta_expander('Data Understading', 
+                                            expanded=False)
+        
+                with expander:
                     
-                    # Load all necessary packages
-                    import sys
-                    sys.path.insert(1, "../")  
+                    exp_text = """
+                    At this stage it is important to get insight in the data you are going to use. 
+                    Detect potential vulnerable variables.
+                    Note: it could be that certain values of variables in your data have strong 
+                    predictive power, however that this is unwanted or unethical for the task at 
+                    hand as well. E.g. an automated model
+                    for insurance approval could implicitily learn that someone with an age over 30 
+                    has a higher
+                    chance of being accepted than someone below the age of 30 with an exact 
+                    similar situation.
+                    Measuring disparity in predictions is further handled and explained in: 
+                    "Model adequacy".
+                    In the upcoming example we load the commonly-known titanic dataset. 
+                    This data consists of
+                    information of all passengers that embarked the titanic. Information such as: 
+                    name, ticket, boat,age, sex, room and ticket-type are present. 
+                    A full overview of the variables are shown below.
+                    The goal in this example is to predict the survival status of individual 
+                    passengers on the Titanic  after training on the (sampled) dataset and 
+                    see what the effect of the sampling has on the model accuracy.
+                    """
                     
-                    import numpy as np
-                    np.random.seed(0)
+                    help.sub_text(exp_text)
                     
-                    from aif360.datasets import GermanDataset
-                    from aif360.metrics import BinaryLabelDatasetMetric
-                    from aif360.algorithms.preprocessing import Reweighing
+                    button_du = st.button('Run Data Understanding Example')
                     
-                    from IPython.display import Markdown, display
+                    if button_du:
+                        # only execute this code when expanded + clicked
+                        with st.echo():
+                            import seaborn as sns
+                            #import matplotlib.pyplot as plt
+                            titanic = sns.load_dataset('titanic')
+                            
+                            x = titanic['sex'].value_counts()
+                                
+                            st.write("Number of males: "+ str(titanic['sex'].value_counts()['male']))
+                            st.write("Number of females: "+str(titanic['sex'].value_counts()['female']))
+                            
+                            sns.countplot(x='survived', data=titanic)
+                            st.pyplot()
+                            
+                         
+                        help.sub_text("""
+                                      From this we can observe that there were approximately twice as many males on board of the
+                                      Titanic compared to females. For exact proportions:
+                                      """)
+                            
+                        with st.echo():
+                            #Normalized
+                            st.write(titanic['sex'].value_counts(normalize=True))
+                            
+                            # If we now take a closer look at the data, it seems that sex is actually a relevant factor. From this
+                            # plot it appears that females seem to have a higher chance of survival compared to the males.
+                            
+                            # Countplot
+                            #sns.catplot(x ="sex", hue ="survived", kind ="count", data = titanic)
+                            #sns.factorplot("class", data=titanic, hue="sex")
+                
+                
+                expander = st.beta_expander('Data Preparation', 
+                                            expanded=False)
+        
+                with expander:
                     
-                    dataset_orig = GermanDataset(
-                    protected_attribute_names=['age'],           # this dataset also contains protected
-                                                                 # attribute for "sex" which we do not
-                                                                 # consider in this evaluation
-                    privileged_classes=[lambda x: x >= 25],      # age >=25 is considered privileged
-                    features_to_drop=['personal_status', 'sex'] # ignore sex-related attributes
-                    )
+                    exp_dp_text = """
+                    Let's say we would like to have a sample from this dataset for training, 
+                    then we could randomly sample 
+                    Class normalization
+                    Sampling: stratisfied - preserve original population
+                    Adjusting weights
+                    Estimate missing data of classes
+                    Define a target population and a sampling frame 
+                    (the list of individuals that the sample will be
+                    drawn from). Match the sampling frame to the target population 
+                    as much as possible to reduce the risk of sampling bias.
+                    Oversampling can be used to avoid sampling bias in situations where members of defined
+                    groups are underrepresented (undercoverage). This is a method of selecting respondents from
+                    some groups so that they make up a larger share of a sample than they actually do the
+                    population.
+                    After all data is collected, responses from oversampled groups are weighted to their
+                    actual share of the population to remove any sampling bias.
+                    Stratified random sampling is one common method that is used by researchers because it
+                    enables them to obtain a sample population that best represents the entire population being
+                    studied, making sure that each subgroup of interest is represented.
+                    """
                     
-                    dataset_orig_train, dataset_orig_test = dataset_orig.split([0.7], shuffle=True)
+                    help.sub_text(exp_dp_text)
                     
-                    privileged_groups = [{'age': 1}]
-                    unprivileged_groups = [{'age': 0}]
+                    help.sub_text("""
+                                  First we have to do some standard preprocessing of the data so we can work with it and it is
+                                  ready to be inserted into a model. This entails filling in the missing values, removing noninformative
+                                  variables and basic one-hot-encoding for categorical variables. Details of the
+                                  processing are left out of this notebook for now but similar steps were taken in the following
+                                  URL. For now we just import the preprocessed dataset with similar sex-ratio's as previously
+                                  explored.
+                                  """)
                     
-                    metric_orig_train = BinaryLabelDatasetMetric(dataset_orig_train, 
-                                             unprivileged_groups=unprivileged_groups,
-                                             privileged_groups=privileged_groups)
-                    display(Markdown("#### Original training dataset"))
-                    print("Difference in mean outcomes between unprivileged and privileged groups = %f" % metric_orig_train.mean_difference())
+                    button_dp = st.button('Run Data Preparation Example')
                     
-                    RW = Reweighing(unprivileged_groups=unprivileged_groups,
-                    privileged_groups=privileged_groups)
-                    dataset_transf_train = RW.fit_transform(dataset_orig_train)
-                    
-                    metric_transf_train = BinaryLabelDatasetMetric(dataset_transf_train, 
-                                               unprivileged_groups=unprivileged_groups,
-                                               privileged_groups=privileged_groups)
-                    display(Markdown("#### Transformed training dataset"))
-                    print("Difference in mean outcomes between unprivileged and privileged groups = %f" % metric_transf_train.mean_difference())
-            
+                    if button_dp:
+                        # only execute this code when expanded + clicked
+                        with st.echo():
+                            
+                            import pandas as pd
+                            from sklearn.model_selection import train_test_split
+                            data = pd.read_csv("titanic.csv")
+                            #del data['Unnamed: 0']
+                            X, y = data.iloc[:, 1:], data.iloc[:, 0]
+                            # Random sampling - split the dataset in train and test - force low amount of women
+                            X_train_rnd, X_test_rnd, y_train_rnd, y_test_rnd = train_test_split(X, y, test_size=0.33, random_state=42)
+                            st.write(str(X_train_rnd['sex'].value_counts()['female']))
             
     elif section == 'Blogs':
         

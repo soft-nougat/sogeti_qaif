@@ -6,3 +6,4 @@ streamlit==0.84.0
 aif360
 fairlearn
 tensorflow
+seaborn

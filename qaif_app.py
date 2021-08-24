@@ -15,6 +15,7 @@ and ethical requirements
 import streamlit as st
 from PIL import Image
 import helper as help
+import principles 
         
 # app setup
 st.set_option('deprecation.showPyplotGlobalUse', False)
@@ -46,7 +47,7 @@ try:
                                  'Data Understanding',
                                  'Data Preparation',
                                  'Model Development',
-                                 'Model Validation',
+                                 'Model Evaluation',
                                  'Model Deployment'))
         
         if step == 'High Level information':
@@ -78,6 +79,9 @@ try:
         
         elif step == 'Business Understanding':
             
+            help.header("Business Understanding",
+                        is_sidebar = False)
+            
             help.set_bg_hack('gate1_bg.png')
             
             gate1_text = """
@@ -94,8 +98,13 @@ try:
             
             image = Image.open('gate1_main.png')
             st.image(image, caption='The info on the first gate')
+            
+            principles.bu_principles()
              
         elif step == 'Data Understanding':
+            
+             help.header("Data Understanding",
+                        is_sidebar = False)
             
              help.set_bg_hack('gate2_bg.png')
              
@@ -116,7 +125,12 @@ try:
              image = Image.open('gate2_main.png')
              st.image(image, caption='The info on the second gate')
              
+             principles.du_principles()
+             
         elif step == 'Data Preparation':
+            
+             help.header("Data Preparation",
+                        is_sidebar = False)
             
              help.set_bg_hack('gate3_bg.png')
              
@@ -136,8 +150,14 @@ try:
              
              image = Image.open('gate3_main.png')
              st.image(image, caption='The info on the third gate')
+             
+             principles.dp_principles()
+             
         
         elif step == 'Model Development':
+            
+             help.header("Model Development",
+                        is_sidebar = False)
             
              help.set_bg_hack('gate4_bg.png')
              
@@ -159,7 +179,10 @@ try:
              image = Image.open('gate4_main.png')
              st.image(image, caption='The info on the fourth gate')
              
-        elif step == 'Model Validation':
+        elif step == 'Model Evaluation':
+            
+             help.header("Model Evaluation",
+                        is_sidebar = False)
             
              help.set_bg_hack('gate5_bg.png')
              
@@ -183,6 +206,9 @@ try:
              st.image(image, caption='The info on the fifth gate')
         
         elif step == 'Model Deployment':
+            
+             help.header("Model Deployment",
+                         is_sidebar = False)
             
              help.set_bg_hack('gate6_bg.png')
              
@@ -399,6 +425,34 @@ try:
                             # Random sampling - split the dataset in train and test - force low amount of women
                             X_train_rnd, X_test_rnd, y_train_rnd, y_test_rnd = train_test_split(X, y, test_size=0.33, random_state=42)
                             st.write(str(X_train_rnd['sex'].value_counts()['female']))
+                            
+            if data == 'Text':
+                    
+                text_intro = """
+                <p>Keywords: Class imbalance, Normalization, Sampling, Stratisfied, Bias, Text data</p>
+                <p>Packages used: WEFE</p>
+                <p>Example dataset: <a href = https://github.com/datasciencedojo/datasets/blob/master/titanic.csv>TBD</a></p>
+                """
+            
+                help.sub_text(text_intro)
+                
+                expander = st.beta_expander('Data Understading', 
+                                            expanded=False)
+        
+                with expander:
+                    
+                    exp_text = """
+                    Word embeddings are dense vector representations of words trained from document corpora. 
+                    They have become a core component of natural language processing (NLP) downstream systems 
+                    because of their ability to efficiently capture semantic and syntactic relationships
+                    between words. A widely reported shortcoming of word embeddings is that they are prone 
+                    to inherit stereotypical social biases exhibited in the corpora on which they are trained.
+                    """
+                    
+                    help.sub_text(exp_text)
+                        
+                    
+                    
             
     elif section == 'Blogs':
         

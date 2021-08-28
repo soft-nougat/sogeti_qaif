@@ -113,7 +113,7 @@ def du_principles():
     data version control system (DVC).</dfn>
     Set a documented specification with info on where the data is located, 
     what kind of source it comes from, responsible people, any privacy 
-    or quality concerns.
+    or quality concerns.</br>
     <b>Packages</b>
     <br><a href = 'https://dvc.org/doc/install'>DVC</a></br>
     '''
@@ -214,12 +214,12 @@ def dp_principles():
     
     auditability = '''
     <b>Theoretical guide</b>
-    <br>MLOPs solution for versioning and monitoring.</br>
+    <br>DVC solution for versioning and monitoring.</br>
     <b>Practical guide</b>
     <br><dfn = "For auditors, the main driver of using data analytics is to improve audit quality. 
     It allows auditors to more effectively audit the large amounts of data held and processed in 
     IT systems in larger clients."> Audit checks </dfn> after the data pipeline step can include
-    an MLOps versioning output with an EDA of data used for the training of the model.</br>
+    an DVC versioning output with an EDA of data used for the training of the model.</br>
     '''
     
     help.expander('Auditability',
@@ -272,7 +272,193 @@ def dp_principles():
     <br> Generate synthetic/mask data; Including smart noise to data. </br>
     <b>Packages</b>
     <br> <a href = "https://github.com/joke2k/faker"> Faker </a> 
-    <a href = "https://github.com/opendp/smartnoise-sdk"> Smartnise </a> </br>
+    <a href = "https://github.com/opendp/smartnoise-sdk"> Smartnoise </a> </br>
+    '''
+    
+    help.expander('Privacy',
+                   privacy)
+    
+def md_principles():
+    
+    traceability = '''
+    <b>Theoretical guide</b>
+    <br>Under this principle, it is important to ensure model development is traceable.
+    To accomodate this an MLOPs solution for versioning and monitoring is used. </br>
+    <b>Practical guide</b>
+    <br> Use <dfn title= "MLflow is an open source platform to manage the ML lifecycle, 
+    including experimentation, reproducibility, deployment, and a central model registry.">
+    MlFlow </dfn>for model versioning and log output.</br>
+    <b>Packages</b>
+    <br><a href = 'https://mlflow.org/'>MlFlow</a></br>
+    '''
+    
+    help.expander('Traceability',
+                   traceability)
+    
+    auditability = '''
+    <b>Theoretical guide</b>
+    <br>MLOPs solution for versioning and monitoring, technical peer review on the model 
+    version used prior to pushing to development.</br>
+    <b>Practical guide</b>
+    <li> 1. Use ML Flow for model versioning and log output to collect information. </li>
+    <li> 2. Create repos, pipelines and split into dev(test), acceptance, production. 
+    Add required revewers on each step making sure only the administrators can change reviewers, 
+    not developers or business users. </li>
+    <li> 3. Use a git version control system to push a new version of the code to different environments.</li>
+    </br>
+    '''
+    
+    help.expander('Auditability',
+                   auditability)
+    
+    fairness = '''
+    <b>Theoretical guide</b>
+    <br>Assess if the model is biased during development.</br>
+    <b>Practical guide</b>
+    Use bias mitigation methods like:
+    <li> Adversarial debiasing </li>
+    <li> Reject-object classification </li>
+    <b>Packages</b>
+    <br><a href = 'https://github.com/Trusted-AI/AIF360'>Trusted AI</a>
+    </br>
+    '''
+    
+    help.expander('Fairness',
+                   fairness)
+    
+    transparency = '''
+    <b>Theoretical guide</b>
+    <br>Is the output of the model easily understandable to the developer?</br>
+    <b>Practical guide</b>
+    <br> Use Explainable AI techniques. </br>
+    <b>Packages</b>
+    <br><a href = 'https://github.com/marcotcr/lime'>Lime</a> &
+    <a href = 'https://github.com/slundberg/shap'>Shap</a></br>
+    '''
+    
+    help.expander('Transparency',
+                   transparency)
+    
+    robustness =  '''
+    <b>Theoretical guide</b>
+    <br>Assess if model decisions are influenced by irrelevant factors.</br>
+    <b>Practical guide</b>
+    <li>Deploy model <dfn title="The degradation of model performance due to changes in 
+    data and relationships between input and output variables.">drift</dfn> 
+    detection methods.</li>
+    <li> Unit tests. </li>
+    <b>Packages</b>
+    <br><a href = "https://github.com/SeldonIO/alibi-detect">Alibi-Detect</a></br>
+    '''
+    
+    help.expander('Robustness',
+                   robustness)
+    
+    privacy  = '''
+    <b>Theoretical guide</b>
+    <br> Monitoring access to the development environment and
+    hosting environments for GDPR compliancy . </br>
+    <b>Practical guide</b>
+    <br> Use a VPN tunnel and authentication. </br>
+    '''
+    
+    help.expander('Privacy',
+                   privacy)
+    
+def me_principles():
+    
+    traceability = '''
+    <b>Theoretical guide</b>
+    <br>Under this principle, it is important to assess if the previous phases'
+    traceability principles were followed. </br>
+    <b>Practical guide</b>
+    <br> User assesses reports/dashboards/logs and accepts/declines changes.</br>
+    '''
+    
+    help.expander('Traceability/Auditability',
+                   traceability)
+    
+    
+    fairness = '''
+    <b>Theoretical guide</b>
+    <br>User should assess fairness reports from gates 3 and 4.</br>
+    '''
+    
+    help.expander('Fairness',
+                   fairness)
+    
+    transparency = '''
+    <b>Theoretical guide</b>
+    <br>Evaluation against acceptance criteria set in business understanding.</br>
+    <b>Practical guide</b>
+    <br>Execute acceptance tests (XAI output of model development in a report format). </br>
+    '''
+    
+    help.expander('Transparency',
+                   transparency)
+    
+    robustness =  '''
+    <b>Theoretical guide</b>
+    <br>Model KPI assessment - the KPIs are set in business understanding.</br>
+    <b>Practical guide</b>
+    <li>User acceptance tests (XAI output of model development in a report format)</li>
+    <li>Adversarial attacks and metamorphic tests.</li>
+    '''
+    
+    help.expander('Robustness',
+                   robustness)
+    
+    privacy  = '''
+    <b>Theoretical guide</b>
+    <br> Evaluation against senstive data handling KPIs set in business understanding. </br>
+    <b>Practical guide</b>
+    <br>It is important to review all privacy-related data and model augmentation 
+    that was done in phase 2-4. Provide a report for the stakeholders to review and 
+    share with privacy officers.</br>
+    '''
+    
+    help.expander('Privacy',
+                   privacy)
+
+def d_principles():
+    
+    traceability = '''
+    <b>Theoretical guide</b>
+    <br>Use an MLOPs solution for production monitoring and usage.
+    Following previous gate principles makes sure the model can be 
+    deployed and maintained in production.</br>
+    '''
+    
+    help.expander('Traceability/Auditability',
+                   traceability)
+    
+    
+    transparency = '''
+    <b>Theoretical guide</b>
+    <br>Making sure the model is used what it was built for.</br>
+    <b>Practical guide</b>
+    <br>Sessions with users to transfer knowledge about the process and model.
+    Diligent documentation.</br>
+    '''
+    
+    help.expander('Fairness/Transparency',
+                   transparency)
+    
+    robustness =  '''
+    <b>Theoretical guide</b>
+    <br> Track robustness KPIs set in gate 1. </br>
+    <b>Practical guide</b>
+    <br>Set KPI alerts on monitoring dashboards following model drift and other metrics.</br>
+    '''
+    
+    help.expander('Robustness',
+                   robustness)
+    
+    privacy  = '''
+    <b>Theoretical guide</b>
+    <br>Ensuring the right people have access to model and dashboards.</br>
+    <b>Practical guide</b>
+    <br>Authentication keys.</br>
     '''
     
     help.expander('Privacy',

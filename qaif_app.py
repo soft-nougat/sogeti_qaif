@@ -179,6 +179,8 @@ try:
              image = Image.open('gate4_main.png')
              st.image(image, caption='The info on the fourth gate')
              
+             principles.md_principles()
+             
         elif step == 'Model Evaluation':
             
              help.header("Model Evaluation",
@@ -204,6 +206,8 @@ try:
              
              image = Image.open('gate5_main.png')
              st.image(image, caption='The info on the fifth gate')
+             
+             principles.me_principles()
         
         elif step == 'Model Deployment':
             
@@ -229,6 +233,8 @@ try:
              
              image = Image.open('gate6_main.png')
              st.image(image, caption='The info on the sixth gate')
+             
+             principles.d_principles()
     
     elif section == 'Technical examples':
         

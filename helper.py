@@ -62,7 +62,8 @@ def header(text,
     else:
         st.markdown(html_temp, unsafe_allow_html = True)
 
-def sub_text(text):
+def sub_text(text,
+             alignment = "justify"):
     '''
     A function to neatly display text in app.
 
@@ -77,7 +78,7 @@ def sub_text(text):
     '''
     
     html_temp = f"""
-    <p style = "color:#1F4E79; text_align:justify;"> {text} </p>
+    <p style = "color:#1F4E79; text_align:{alignment};"> {text} </p>
     </div>
     """
     

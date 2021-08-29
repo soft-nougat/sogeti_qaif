@@ -16,6 +16,7 @@ import streamlit as st
 from PIL import Image
 import helper as help
 import principles 
+import examples
         
 # app setup
 st.set_option('deprecation.showPyplotGlobalUse', False)
@@ -265,40 +266,26 @@ try:
                                      'Images'))
             
             bias_g1 = """
-             <p><b>Introduction</b></p>
-             Imbalanced datasets pose a challenge for training predictive models as most of 
-             the algorithms to train these models are not designed to handle class imbalance. 
-             This leads to poor predictive results, as the rules learned from the data by 
-             the model are not representative for the real world or the broader picture. 
-             Most AI algorithms learn a mapping between the input-data and the prediction. 
-             When the classes presented to the model are imbalanced, it can not accurately 
-             learn an accurate mapping, especially towards minority classes. 
-             Essentially, you could say that a bias inthe data generally results in a 
-             biased model. This bias is a threat to external validity – it limits 
-             the generalizability of your findings to a broader group of people, 
-             which in many cases is not justundesirable for the accuracy of your model 
-             but also creates unwanted breaches of ethicalstandards.
-             In practice, not detecting and dealing with class imbalance could 
-             for example result in modelsthat are racist, sexist or discriminate 
-             based on other sensitive properties such as age, religionand gender 
-             among other factors. For instance, think of a model that because of 
-             skewed dataunfairly predicts people with certain skin colours to have 
-             a higher rate of recidivism. Or take 
-             <a href="https://algorithmwatch.org/en/google-vision-racism/">this example</a>
-             where Google's computer vision AI produced labels starkly different depending
-             on skintone on given images.
-             On this page we first explain potential causes of class imbalance, followed by 
-             a brief exampleand methods to deal with this problem adequately.
-             <p><b>Causes of Class Imbalance</b></p>
-             Class imbalance can be caused by multiple factors.
-             One of them simplymeasurement errors which cause a deviation between the
-             A sample is a subset of individuals from a larger population. This allows 
-             you to learn thecharacteristics of a population if the sample actually 
-             reflects the population.
-             biased sampling, measurement errors
-             people with specific characteristics are more likely toagree to take part in the study.
-             Sampling because large set
-             Sampling because subset of data fortraining
+             <b>The problem</b>
+             <br><span style = "color:#F26531">
+             <dfn title = "A disproportionate weight in favor of or against an idea or thing, usually in a way that is closed-minded, prejudicial, or unfair.">
+             Bias</dfn></span> is a threat to external validity of the model – 
+             it limits the generalizability of your findings to a broader group of people, 
+             but also creates unwanted breaches of ethical standards.
+             <br><b>The practicality</b>
+             <br>In practice, not detecting and dealing with class imbalance could 
+             for example result in models that are racist, sexist or discriminate. 
+             For instance, take <a href="https://algorithmwatch.org/en/google-vision-racism/">
+             this example</a> where Google's computer vision AI produced labels starkly 
+             different depending on skintone on given images.
+             <br><b>Causes of Class Imbalance</b>
+             <br>Class imbalance can be caused by multiple factors:</br>
+             <li><span style = "color:#F26531">
+             <dfn title = "The difference between the observed value of a variable and the true, but unobserved, value of that variable.">
+             - Measurement errors</dfn></span></li>
+             <li><span style = "color:#F26531">
+             <dfn title = "A sampling method is called biased if it systematically favors some outcomes over others.">
+             - Biased sampling</dfn></span></li>
              """
               
             help.expander('Understanding the problem',
@@ -306,131 +293,7 @@ try:
             
             if data == 'Tabular':
                 
-                tabular_intro = """
-                <p>Keywords: Class imbalance, Normalization, Sampling, Stratisfied, Bias, Tabular data</p>
-                <p>Packages used: Pandas, SKLearn</p>
-                <p>Example dataset: <a href = https://github.com/datasciencedojo/datasets/blob/master/titanic.csv>Titanic seaborn</a></p>
-                <p>Similar packages to prevent class imbalance: Fairlearn</p>
-                """
-                
-                help.sub_text(tabular_intro)
-                
-                expander = st.beta_expander('Data Understading', 
-                                            expanded=False)
-        
-                with expander:
-                    
-                    exp_text = """
-                    At this stage it is important to get insight in the data you are going to use. 
-                    Detect potential vulnerable variables.
-                    Note: it could be that certain values of variables in your data have strong 
-                    predictive power, however that this is unwanted or unethical for the task at 
-                    hand as well. E.g. an automated model
-                    for insurance approval could implicitily learn that someone with an age over 30 
-                    has a higher
-                    chance of being accepted than someone below the age of 30 with an exact 
-                    similar situation.
-                    Measuring disparity in predictions is further handled and explained in: 
-                    "Model adequacy".
-                    In the upcoming example we load the commonly-known titanic dataset. 
-                    This data consists of
-                    information of all passengers that embarked the titanic. Information such as: 
-                    name, ticket, boat,age, sex, room and ticket-type are present. 
-                    A full overview of the variables are shown below.
-                    The goal in this example is to predict the survival status of individual 
-                    passengers on the Titanic  after training on the (sampled) dataset and 
-                    see what the effect of the sampling has on the model accuracy.
-                    """
-                    
-                    help.sub_text(exp_text)
-                    
-                    button_du = st.button('Run Data Understanding Example')
-                    
-                    if button_du:
-                        # only execute this code when expanded + clicked
-                        with st.echo():
-                            import seaborn as sns
-                            #import matplotlib.pyplot as plt
-                            titanic = sns.load_dataset('titanic')
-                            
-                            x = titanic['sex'].value_counts()
-                                
-                            st.write("Number of males: "+ str(titanic['sex'].value_counts()['male']))
-                            st.write("Number of females: "+str(titanic['sex'].value_counts()['female']))
-                            
-                            sns.countplot(x='survived', data=titanic)
-                            st.pyplot()
-                            
-                         
-                        help.sub_text("""
-                                      From this we can observe that there were approximately twice as many males on board of the
-                                      Titanic compared to females. For exact proportions:
-                                      """)
-                            
-                        with st.echo():
-                            #Normalized
-                            st.write(titanic['sex'].value_counts(normalize=True))
-                            
-                            # If we now take a closer look at the data, it seems that sex is actually a relevant factor. From this
-                            # plot it appears that females seem to have a higher chance of survival compared to the males.
-                            
-                            # Countplot
-                            #sns.catplot(x ="sex", hue ="survived", kind ="count", data = titanic)
-                            #sns.factorplot("class", data=titanic, hue="sex")
-                
-                
-                expander = st.beta_expander('Data Preparation', 
-                                            expanded=False)
-        
-                with expander:
-                    
-                    exp_dp_text = """
-                    Let's say we would like to have a sample from this dataset for training, 
-                    then we could randomly sample 
-                    Class normalization
-                    Sampling: stratisfied - preserve original population
-                    Adjusting weights
-                    Estimate missing data of classes
-                    Define a target population and a sampling frame 
-                    (the list of individuals that the sample will be
-                    drawn from). Match the sampling frame to the target population 
-                    as much as possible to reduce the risk of sampling bias.
-                    Oversampling can be used to avoid sampling bias in situations where members of defined
-                    groups are underrepresented (undercoverage). This is a method of selecting respondents from
-                    some groups so that they make up a larger share of a sample than they actually do the
-                    population.
-                    After all data is collected, responses from oversampled groups are weighted to their
-                    actual share of the population to remove any sampling bias.
-                    Stratified random sampling is one common method that is used by researchers because it
-                    enables them to obtain a sample population that best represents the entire population being
-                    studied, making sure that each subgroup of interest is represented.
-                    """
-                    
-                    help.sub_text(exp_dp_text)
-                    
-                    help.sub_text("""
-                                  First we have to do some standard preprocessing of the data so we can work with it and it is
-                                  ready to be inserted into a model. This entails filling in the missing values, removing noninformative
-                                  variables and basic one-hot-encoding for categorical variables. Details of the
-                                  processing are left out of this notebook for now but similar steps were taken in the following
-                                  URL. For now we just import the preprocessed dataset with similar sex-ratio's as previously
-                                  explored.
-                                  """)
-                    
-                    button_dp = st.button('Run Data Preparation Example')
-                    
-                    if button_dp:
-                        # only execute this code when expanded + clicked
-                        with st.echo():
-                            
-                            import pandas as pd
-                            from sklearn.model_selection import train_test_split
-                            data = pd.read_csv("titanic.csv")
-                            #del data['Unnamed: 0']
-                            X, y = data.iloc[:, 1:], data.iloc[:, 0]
-                            # Random sampling - split the dataset in train and test - force low amount of women
-                            X_train_rnd, X_test_rnd, y_train_rnd, y_test_rnd = train_test_split(X, y, test_size=0.33, random_state=42)
-                            st.write(str(X_train_rnd['sex'].value_counts()['female']))
+               examples.tabular_bias()
                             
             if data == 'Text':
                     

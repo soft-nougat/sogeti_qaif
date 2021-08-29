@@ -15,8 +15,8 @@ def bu_principles():
     data comes from and how it ends up.</br>
     <b>Practical guide</b>
     <br>Implement an MLOps solution to monitor and trace inputs and outputs like 
-    <dfn title="MLflow is an open source platform to manage the ML lifecycle. 
-    It includes a tracking component."> MlFlow.</dfn></br>
+    <span style = "color:#F26531"><dfn title="MLflow is an open source platform to manage the ML lifecycle. 
+    It includes a tracking component.">MlFlow.</dfn></span></br>
     <b>Packages</b>
     <br><a href = 'https://mlflow.org/'>MLFlow</a></br>
     '''
@@ -27,10 +27,11 @@ def bu_principles():
     auditability = '''
     <b>Theoretical guide</b>
     <br>Under this principle, we define who will be able to access the inputs and source code.
-    Especially in the case of <dfn title= "The term “PII,” as defined in OMB Memorandum M-07-1616 
-    refers to information that can be used to distinguish or trace an individual's identity, 
-    either alone or when combined with other personal or identifying information that is linked or 
-    linkable to a specific individual.">sensitive (PII)</dfn> applications.</br>
+    Especially in the case of <span style = "color:#F26531">
+    <dfn title= "The term “PII,” as defined in OMB Memorandum M-07-1616 refers to information 
+    that can be used to distinguish or trace an individual's identity, either alone or when 
+    combined with other personal or identifying information that is linked or linkable to a 
+    specific individual.">sensitive (PII)</dfn></span> applications.</br>
     <b>Practical guide</b>
     <br>Enable security authentication or encryption frameworks.</br>
     <b>Packages</b>
@@ -48,7 +49,11 @@ def bu_principles():
     <br>Under this principle, we define fairness metrics and detection methods if 
     UC applies to sensitive groups.</br>
     <b>Practical guide</b>
-    <br>Use methods like Stastical Parity difference; Equal Opportunity Difference; Average Odd difference ; Disparate Impact. </br>
+    <br>Use methods like:</br>
+    <li>- Stastical Parity difference;</li> 
+    <li>- Equal Opportunity Difference; </li>
+    <li>- Average Odd difference;</li> 
+    <li>- Disparate Impact. </li>
     <b>Packages</b>
     <br><a href = ' https://github.com/fairlearn/fairlearn/tree/main/fairlearn/metrics'>Fairlearn</a>
     is a Python package that empowers developers of artificial intelligence (AI) systems to assess 
@@ -62,7 +67,7 @@ def bu_principles():
     transparency = '''
     <b>Theoretical guide</b>
     <br>Under this principle, we define transparency methods throughout the lifecycle based on 
-    end-user requirements </br>
+    end-user requirements.</br>
     <b>Practical guide</b>
     <br>Implement explainable AI methods to understand the outcome of the model.</br>
     <b>Packages</b>
@@ -78,7 +83,10 @@ def bu_principles():
     <br>Under this principle, we create a definition of ready and define performance metrics to 
     ensure the model is robust.</br>
     <b>Practical guide</b>
-    <br>Implement performance tests (data input size, API calls etc.); data drift testing methods; unit testing.</br>
+    <br>Implement the following:</br>
+    <li>- Performance tests (data input size, API calls etc.);</li> 
+    <li>- Data drift testing methods;</li>
+    <li>- Unit testing.</li>
     <b>Packages</b>
     <br>See other phases for packages and methods.</br>
     '''
@@ -105,12 +113,13 @@ def du_principles():
     <br>Under this principle, we review data collection, inputs and state 
     of data.</br>
     <b>Practical guide</b>
-    <br> Implementing a <dfn title= "Data Version Control is a new type of 
-    data versioning, workflow, and experiment management software, that builds 
-    upon Git (although it can work stand-alone). DVC reduces the gap between 
-    established engineering tool sets and data science needs, allowing users 
-    to take advantage of new features while reusing existing skills and intuition.">
-    data version control system (DVC).</dfn>
+    <br> Implementing a <span style = "color:#F26531">
+    <dfn title= "Data Version Control is a new type of data versioning, workflow, 
+    and experiment management software, that builds upon Git (although it can work 
+    stand-alone). DVC reduces the gap between established engineering tool sets and 
+    data science needs, allowing users to take advantage of new features while 
+    reusing existing skills and intuition.">
+    data version control system (DVC).</dfn></span>
     Set a documented specification with info on where the data is located, 
     what kind of source it comes from, responsible people, any privacy 
     or quality concerns.</br>
@@ -125,11 +134,12 @@ def du_principles():
     <b>Theoretical guide</b>
     <br>Under this principle, we review DVC outputs, pinpoint data handling steps and validate them.</br>
     <b>Practical guide</b>
-    <br>Audit checks (peer review). <dfn title = "A technical review on the data sources and data 
-    handling brings the quality of said sources to a higher level."> Techincal audit checks </dfn>, the auditer needs to understand the code.</br>
+    <br><span style = "color:#F26531">
+    <dfn title = "A technical review on the data sources and data 
+    handling brings the quality of said sources to a higher level.">Technical audit checks</dfn></span>, 
+    the auditer needs to understand the code.</br>
     <b>Packages</b>
-    <br>Provide EDA of initial data and manipulated data - tf data validation (see below) 
-    in a dashboard or a document.</br> 
+    <br>Provide EDA of initial data and manipulated data in a dashboard or a document.</br> 
     '''
     
     help.expander('Auditability',
@@ -143,11 +153,10 @@ def du_principles():
     <br>Bias detection using EDA methods and 
     <a href = "https://share.streamlit.io/soft-nougat/dqw-ivves/app.py">DQW</a>.</br>
     <b>Packages</b>
-    <br><a href = 'https://www.tensorflow.org/tfx/data_validation/get_started'>TF Data Validation</a>;
-    <a href = 'https://github.com/pandas-profiling/pandas-profiling'>Pandas Profiling</a>;
-    <a href = 'https://pypi.org/project/sweetviz/ '>SweetViz</a>;
-    <a href = 'https://share.streamlit.io/soft-nougat/dqw-ivves/app.py'>DQW</a>
-    </br>
+    <li><a href = 'https://www.tensorflow.org/tfx/data_validation/get_started'>TF Data Validation</a>;</li>
+    <li><a href = 'https://github.com/pandas-profiling/pandas-profiling'>Pandas Profiling</a>;</li>
+    <li><a href = 'https://pypi.org/project/sweetviz/ '>SweetViz</a>;</li>
+    <li><a href = 'https://share.streamlit.io/soft-nougat/dqw-ivves/app.py'>DQW.</a></li>
     '''
     
     help.expander('Fairness',
@@ -173,7 +182,7 @@ def du_principles():
     <b>Practical guide</b>
     <br>
     <li>1 - Separating training and testing data into different tables and environments to prevent data leaks.</li>
-    <li>2 - Separating prod, dev, acc data</li>
+    <li>2 - Separating PROD, ACC, DEV data.</li>
     <b>Packages</b>
     <br>
     <li>1 - Preparing separate data tables.</li>
@@ -187,9 +196,12 @@ def du_principles():
     <b>Theoretical guide</b>
     <br> Understand senstive data inputs for GDPR purposes. </br>
     <b>Practical guide</b>
-    <br> Sogeti's PII identifier & ADA </br>
+    <br> Sogeti's PII identifier & ADA. </br>
     <b>Packages</b>
-    <br> <a href = "https://pypi.org/project/piidetect/"> PII Detect </a> </br>
+    <li> <a href = "https://pypi.org/project/piidetect/"> PII Detect; </a> </li>
+    <li> <a href = "https://www.sogeti.com/services/artificial-intelligence/artificial-data-amplifier/"> 
+    Artificial Data Amplifier (ADA). </a> </li>
+    
     '''
     
     help.expander('Privacy',
@@ -202,9 +214,10 @@ def dp_principles():
     <b>Theoretical guide</b>
     <br>Under this principle, we prepare data pipelines in model development.</br>
     <b>Practical guide</b>
-    <br> Implementing a <dfn title= "The data pipeline would ensure traceability 
-    because it includes explicit steps that read data from source and transformed it.">
-    data pipeline.</dfn> </br>
+    <br> Implementing a <span style = "color:#F26531">
+    <dfn title= "The data pipeline would ensure traceability because it includes explicit 
+    steps that read data from source and transformed it.">
+    data pipeline.</dfn></span></br>
     <b>Packages</b>
     <br><a href = 'https://www.tensorflow.org/guide/data'>TF Data pipeline</a></br>
     '''
@@ -216,9 +229,10 @@ def dp_principles():
     <b>Theoretical guide</b>
     <br>DVC solution for versioning and monitoring.</br>
     <b>Practical guide</b>
-    <br><dfn = "For auditors, the main driver of using data analytics is to improve audit quality. 
+    <br><span style = "color:#F26531">
+    <dfn = "For auditors, the main driver of using data analytics is to improve audit quality. 
     It allows auditors to more effectively audit the large amounts of data held and processed in 
-    IT systems in larger clients."> Audit checks </dfn> after the data pipeline step can include
+    IT systems in larger clients."> Audit checks </dfn></span> after the data pipeline step can include
     an DVC versioning output with an EDA of data used for the training of the model.</br>
     '''
     
@@ -227,9 +241,13 @@ def dp_principles():
     
     fairness = '''
     <b>Theoretical guide</b>
-    <br>Review bias correction methods .</br>
+    <br>Review bias correction methods.</br>
     <b>Practical guide</b>
-    <br>Sampling, Reweighting , Feature engineering, Synthetic data.</br>
+    <br>Use:</br>
+    <li>- Sampling;</li> 
+    <li>- Reweighting;</li> 
+    <li>- Feature engineering;</li>
+    <li>- Synthetic data.</li>
     <b>Packages</b>
     <br><a href = 'https://github.com/Trusted-AI/AIF360'>Trusted AI</a>
     </br>
@@ -254,8 +272,8 @@ def dp_principles():
     robustness =  '''
     <b>Theoretical guide</b>
     <br>
-    <li>Mutation testing for model stability and robustness </li>
-    <li>Data pre-processing pipeline checks</li>
+    <li>- Mutation testing for model stability and robustness </li>
+    <li>- Data pre-processing pipeline checks</li>
     <b>Practical guide</b>
     <br>Create Data mutations.</br>
     <b>Packages</b>
@@ -285,9 +303,10 @@ def md_principles():
     <br>Under this principle, it is important to ensure model development is traceable.
     To accomodate this an MLOPs solution for versioning and monitoring is used. </br>
     <b>Practical guide</b>
-    <br> Use <dfn title= "MLflow is an open source platform to manage the ML lifecycle, 
+    <br> Use <span style = "color:#F26531">
+    <dfn title= "MLflow is an open source platform to manage the ML lifecycle, 
     including experimentation, reproducibility, deployment, and a central model registry.">
-    MlFlow </dfn>for model versioning and log output.</br>
+    MlFlow </dfn></span>for model versioning and log output.</br>
     <b>Packages</b>
     <br><a href = 'https://mlflow.org/'>MlFlow</a></br>
     '''
@@ -316,8 +335,8 @@ def md_principles():
     <br>Assess if the model is biased during development.</br>
     <b>Practical guide</b>
     Use bias mitigation methods like:
-    <li> Adversarial debiasing </li>
-    <li> Reject-object classification </li>
+    <li>- Adversarial debiasing </li>
+    <li>- Reject-object classification </li>
     <b>Packages</b>
     <br><a href = 'https://github.com/Trusted-AI/AIF360'>Trusted AI</a>
     </br>
@@ -343,10 +362,11 @@ def md_principles():
     <b>Theoretical guide</b>
     <br>Assess if model decisions are influenced by irrelevant factors.</br>
     <b>Practical guide</b>
-    <li>Deploy model <dfn title="The degradation of model performance due to changes in 
-    data and relationships between input and output variables.">drift</dfn> 
+    <li>- Deploy model <span style = "color:#F26531">
+    <dfn title="The degradation of model performance due to changes in 
+    data and relationships between input and output variables.">drift</dfn></span> 
     detection methods.</li>
-    <li> Unit tests. </li>
+    <li>- Unit tests. </li>
     <b>Packages</b>
     <br><a href = "https://github.com/SeldonIO/alibi-detect">Alibi-Detect</a></br>
     '''
@@ -401,8 +421,8 @@ def me_principles():
     <b>Theoretical guide</b>
     <br>Model KPI assessment - the KPIs are set in business understanding.</br>
     <b>Practical guide</b>
-    <li>User acceptance tests (XAI output of model development in a report format)</li>
-    <li>Adversarial attacks and metamorphic tests.</li>
+    <li>- User acceptance tests (XAI output of model development in a report format);</li>
+    <li>- Adversarial attacks and metamorphic tests.</li>
     '''
     
     help.expander('Robustness',

@@ -184,8 +184,8 @@ def tabular_bias():
         <b>The goal</b>
         <br>Given that we have handled the data in previous 2 phases, here we need to 
         detect bias neglection during model development.
-        <b>Practical example</b>
-        For the sake of this example we show the difference in model performance between 
+        <br><b>Practical example</b>
+        <br>For the sake of this example we show the difference in model performance between 
         a model trained on an imbalanced compared to a balanced dataset.
         """
         

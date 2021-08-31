@@ -13,6 +13,8 @@ def tabular_bias():
     help.header("Tabular Data",
                 is_sidebar = False)
     
+    st.markdown("""---""")
+    
     col1, col2, col3, col4 = st.beta_columns(4)
     
     with col1:
@@ -30,8 +32,10 @@ def tabular_bias():
         help.sub_text("""<b>Packages used</b>""", 
                       alignment = "left")
         help.sub_text("""
-                      Pandas
-                      <br>SKLearn""", 
+                      <a href = https://pandas.pydata.org/>
+                      Pandas</a>
+                      <br><a href = https://scikit-learn.org/stable/>
+                      SKLearn</a>""", 
                       alignment = "left")
     with col3:
         help.sub_text("""<b>Example dataset</b>""", 
@@ -44,10 +48,13 @@ def tabular_bias():
         help.sub_text("""<b>Similar packages</b>""", 
                       alignment = "left")
         help.sub_text("""
-                      Fairlearn""", 
+                      <a href = ' https://github.com/fairlearn/fairlearn/tree/main/fairlearn/metrics'>
+                      Fairlearn</a>""", 
                       alignment = "left")
         
-    expander = st.beta_expander('Data Understading', 
+    st.markdown("""---""")
+        
+    expander = st.beta_expander('Data Understanding', 
                                 expanded=False)
 
     with expander:

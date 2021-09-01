@@ -72,10 +72,10 @@ try:
             
             help.sub_text(main_text)
            
-            image = Image.open('qaif_main.png')
+            image = Image.open('bg_other/qaif_main.png')
             st.image(image, caption='The blocks and corresponding gates of the QAIF')
             
-            image_1 = Image.open('qaif_secondary.png')
+            image_1 = Image.open('bg_other/qaif_secondary.png')
             st.image(image_1)
         
         elif step == 'Business Understanding':
@@ -97,7 +97,7 @@ try:
             
             help.sub_text(gate1_text)
             
-            image = Image.open('gate1_main.png')
+            image = Image.open('bg_other/gate1_main.png')
             st.image(image, caption='The info on the first gate')
             
             principles.bu_principles()
@@ -123,7 +123,7 @@ try:
               
              help.sub_text(gate2_text)
                  
-             image = Image.open('gate2_main.png')
+             image = Image.open('bg_other/gate2_main.png')
              st.image(image, caption='The info on the second gate')
              
              principles.du_principles()
@@ -149,7 +149,7 @@ try:
               
              help.sub_text(gate3_text)
              
-             image = Image.open('gate3_main.png')
+             image = Image.open('bg_other/gate3_main.png')
              st.image(image, caption='The info on the third gate')
              
              principles.dp_principles()
@@ -177,7 +177,7 @@ try:
               
              help.sub_text(gate4_text)
              
-             image = Image.open('gate4_main.png')
+             image = Image.open('bg_other/gate4_main.png')
              st.image(image, caption='The info on the fourth gate')
              
              principles.md_principles()
@@ -205,7 +205,7 @@ try:
               
              help.sub_text(gate5_text)
              
-             image = Image.open('gate5_main.png')
+             image = Image.open('bg_other/gate5_main.png')
              st.image(image, caption='The info on the fifth gate')
              
              principles.me_principles()
@@ -232,7 +232,7 @@ try:
               
              help.sub_text(gate6_text)
              
-             image = Image.open('gate6_main.png')
+             image = Image.open('bg_other/gate6_main.png')
              st.image(image, caption='The info on the sixth gate')
              
              principles.d_principles()

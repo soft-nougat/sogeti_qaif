@@ -297,30 +297,48 @@ try:
                             
             if data == 'Text':
                     
-                text_intro = """
-                <p>Keywords: Class imbalance, Normalization, Sampling, Stratisfied, Bias, Text data</p>
-                <p>Packages used: WEFE</p>
-                <p>Example dataset: <a href = https://github.com/datasciencedojo/datasets/blob/master/titanic.csv>TBD</a></p>
-                """
-            
-                help.sub_text(text_intro)
-                
-                expander = st.beta_expander('Data Understading', 
-                                            expanded=False)
-        
-                with expander:
-                    
-                    exp_text = """
-                    Word embeddings are dense vector representations of words trained from document corpora. 
-                    They have become a core component of natural language processing (NLP) downstream systems 
-                    because of their ability to efficiently capture semantic and syntactic relationships
-                    between words. A widely reported shortcoming of word embeddings is that they are prone 
-                    to inherit stereotypical social biases exhibited in the corpora on which they are trained.
-                    """
-                    
-                    help.sub_text(exp_text)
+                examples.text_bias()
                         
-                    
+        elif example == 'Model interpretability':
+            
+            
+            help.set_bg_hack('gate1_bg.png')
+            
+            help.header("Model interpretability",
+                        is_sidebar = False)
+        
+            data = st.sidebar.radio("Select Data Type",
+                                    ('Tabular',
+                                     'Text', 
+                                     'Images'))
+            
+            xai_g1 = """
+Model transparency is key imperative in a business context. 
+The users need to understand why a model reaches certain decisions without having 
+to look into the code.
+<span style = "color:#F26531">
+<dfn title =
+"Explainable AI aims to mimic model behaviour at a global (explanations of how 
+the model works from a general point of view) and/or local level (explanations 
+of the model for a sample) to help explain how the model came to its decision.">
+Explainable AI </dfn></span> is an important component in creating production ready machine 
+learning models, as it supports user requirements for interpretability and transparency.
+             """
+              
+            help.expander('Understanding the problem',
+                          xai_g1)
+            
+            if data == "Tabular":
+            
+                examples.tabular_xai()
+                
+            elif data == "Images":
+                
+                examples.image_xai()
+                
+            elif data == "Text":
+                
+                examples.text_xai()
                     
             
     elif section == 'Blogs':

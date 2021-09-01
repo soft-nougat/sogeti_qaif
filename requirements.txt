@@ -7,3 +7,10 @@ aif360
 fairlearn
 tensorflow
 seaborn
+scikit-image
+shap
+xgboost
+keras
+image-classifiers==1.0.0
+lime
+nltk

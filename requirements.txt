@@ -5,12 +5,12 @@ opencv-python-headless
 streamlit==0.84.0
 aif360
 fairlearn
-tensorflow
+tensorflow==2.1
 seaborn
 scikit-image
 shap
 xgboost
-keras
+keras==2.3.1
 image-classifiers==1.0.0
 lime
 nltk

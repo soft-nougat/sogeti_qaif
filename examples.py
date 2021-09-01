@@ -9,6 +9,12 @@ import streamlit as st
 import streamlit.components.v1 as components
 import helper as help
 import shap 
+## Imports libs
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+os.environ["SM_FRAMEWORK"] = "tf.keras"
+
+from tensorflow import keras
 
 def st_shap(plot, height=None):
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
@@ -320,11 +326,12 @@ def text_bias():
         "A vector of words. The target describe the gender groups in which 
         fairness is intended to be measured (e.g., women, men, non-binary).">
         targets</dfn></span>.
-        <br>We implement the following metrics:
+        <br>Responsibly WE implements the following metrics:
         <li>Word Embedding Association Test (WEAT)
         <li>Bias measure and debiasing
-        <li>Clustering as classification of biased neutral words
-        <br>In the following code, we measure the gender bias of a pretrained we model.
+        <li>Clustering as classification of biased neutral words</li>
+        <br>In the following code, we measure the direct gender bias of a pretrained 
+        Responsibly WE model, we debias it and run correlations to validate the debiasing.
         """
         
         help.sub_text(exp_text)
@@ -428,8 +435,6 @@ def text_bias():
                 
                st.pyplot()
                
-               
-                               
         
 def tabular_xai():
     
@@ -671,28 +676,34 @@ With this approach, the accuracy of a neural net is preserved.">
         Neural-Backed Decision Trees (NBDTs).</dfn></span> A standalone Streamlit
         App where you can try this out can be accessed 
         <a href = "https://share.streamlit.io/marktensensgt/streamlit_object_recognition/main.py">
-        here</a>. 
+        here</a> A demo is below. 
         """
         
         help.sub_text(exp_text)
         
+        st.video("https://youtu.be/cSeAhiZB8SI")
+        
     
-    expander = st.beta_expander('Model Development and Evaluation', 
+    expander = st.beta_expander('Lime Example', 
                                 expanded=False)
     
     with expander:
         
         exp_text = """
-       In this example, we take a binary classification case built with a sklearn model. 
-       We train, tune and test our model. Then we can use our data and the model to create 
-       an additional <span style = "color:#F26531">
-<dfn title = 
-"A XAI method based on a game theory approach to explain individual predictions. 
-The feature values of a data instance act as players in coalition. The Shapley 
-value is the average marginal contribution of a feature value across all possible 
-coalitions."> 
-       SHAP model </dfn></span> that explains our classification model – a breast cancer 
-       prediction outcome.  
+        In this example, we will use read an image and use the pre-trained InceptionV3 
+        model available in Keras to predict the class of each image and then generate 
+        explanation using a  <span style = "color:#F26531">
+        <dfn title = "Lime stands for Local Interpretable Model-agnostic Explanations. 
+It is a technique that explains how the input features of a machine learning model affect
+its predictions. For example, in image classification tasks, LIME finds the region of 
+an image (set of super-pixels) with the strongest association with a prediction label.  
+">LIME model.</dfn></span> LIME generates explanations by creating a new dataset of 
+random perturbations (with their respective predictions) around the instance being 
+explained and then fitting a weighted local surrogate model. This local model is 
+usually a simpler model with intrinsic interpretability such as a linear regression model. 
+Once a linear model is fitted, we get a coefficient for each super-pixel in the 
+image that represents how strong is the effect of the super-pixel in the prediction
+ of Labrador.  
        """
         
         help.sub_text(exp_text)
@@ -702,128 +713,84 @@ coalitions.">
         if button_xai_me:
             with st.echo():
                 
-                import json
-                import math
-                from typing import Dict, Optional
-                
-                import matplotlib.pyplot as plt
                 import numpy as np
-                import shap
+                import skimage.transform
+                import skimage.io
+                Xi = skimage.io.imread("https://arteagac.github.io/blog/lime_image/img/cat-and-dog.jpg")
+                Xi = skimage.transform.resize(Xi, (299,299)) 
+                Xi = (Xi - 0.5)*2 #Inception pre-processing
+                skimage.io.imshow(Xi/2+0.5) # Show image before inception preprocessing
                 
-                from skimage.segmentation import slic
-                from matplotlib.colors import LinearSegmentedColormap
-                from keras.engine.training import Model
-                from classification_models import Classifiers
+                #Predict class for image using InceptionV3
+                import keras
+                from keras.applications.imagenet_utils import decode_predictions
+                from keras.applications import inception_v3
+                inceptionV3_model = keras.applications.inception_v3.InceptionV3() #Load pretrained model
+                preds = inceptionV3_model.predict(Xi[np.newaxis,:,:,:])
+                top_pred_classes = preds[0].argsort()[-5:][::-1] # Save ids of top 5 classes
+                decode_predictions(preds)[0] #Print top 5 classes
                 
-                from coco_loader import CocoLoader
+                #Generate segmentation for image
+                import skimage.segmentation
+                superpixels = skimage.segmentation.quickshift(Xi, kernel_size=4,max_dist=200, ratio=0.2)
+                num_superpixels = np.unique(superpixels).shape[0]
+                skimage.io.imshow(skimage.segmentation.mark_boundaries(Xi/2+0.5, superpixels))
                 
-                IMG_COUNT = 100
-                IMG_HEIGHT = 224
-                IMG_WIDTH = 224
-                IMG_CHANNELS = 3
-                IMG_SHAPE = (IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS)
+                #Generate perturbations
+                num_perturb = 150
+                perturbations = np.random.binomial(1, 0.5, size=(num_perturb, num_superpixels))
                 
-                ResNet34, preprocess_input = Classifiers.get('resnet34')
-                model = ResNet34(IMG_SHAPE, weights='imagenet')
+                #Create function to apply perturbations to images
+                import copy
+                def perturb_image(img,perturbation,segments): 
+                  active_pixels = np.where(perturbation == 1)[0]
+                  mask = np.zeros(segments.shape)
+                  for active in active_pixels:
+                    mask[segments == active] = 1 
+                  perturbed_image = copy.deepcopy(img)
+                  perturbed_image = perturbed_image*mask[:,:,np.newaxis]
+                  return perturbed_image
                 
-                loader = CocoLoader()
-                data = loader.load_sample(IMG_COUNT)
-                data = preprocess_input(data)
+                predictions = []
+                for pert in perturbations:
+                  perturbed_img = perturb_image(Xi,pert,superpixels)
+                  pred = inceptionV3_model.predict(perturbed_img[np.newaxis,:,:,:])
+                  predictions.append(pred)
                 
-                def get_class_names() -> Dict[int, str]:
-                    url = "imagenet_class_index.json"
-                    with open(url) as f:
-                        return {int(k): v[1] for k, v in json.load(f).items()}
-        
-                def mask_image(
-                    zs: np.array, 
-                    segmentation: np.array, 
-                    image: np.array, 
-                    background: Optional[int] = None
-                ) -> np.array:
-                    if background is None:
-                        background = image.mean((0,1))
-                    out = np.zeros((zs.shape[0], image.shape[0], image.shape[1], image.shape[2]))
-                    for i in range(zs.shape[0]):
-                        out[i,:,:,:] = image
-                        for j in range(zs.shape[1]):
-                            if zs[i,j] == 0:
-                                out[i][segmentation == j,:] = background
-                    return out
+                predictions = np.array(predictions)
+                print(predictions.shape)
                 
-                def fill_segmentation(values: np.array, segmentation_lut: np.array) -> np.array:
-                    out = np.zeros(segmentation_lut.shape)
-                    for i in range(values.shape[0]):
-                        out[segmentation_lut == i] = values[i]
-                    return out
-        
-                def get_colormap() -> LinearSegmentedColormap:
-                    blue = (22/255, 134/255, 229/255)
-                    blue_shades = [(*blue, alpha) for alpha in np.linspace(1, 0, 100)]
-                    red = (254/255 ,0/255, 86/255)
-                    red_shades = [(*red, alpha) for alpha in np.linspace(0, 1, 100)]
-                    return LinearSegmentedColormap.from_list("shap", blue_shades + red_shades)
+                #Show example of perturbations
+                print(perturbations[0]) 
+                skimage.io.imshow(perturb_image(Xi/2+0.5,perturbations[0],superpixels))
                 
-                def plot_shap_top_explanations(
-                    model: Model, 
-                    image: np.array, 
-                    class_names_mapping: Dict[int, str],
-                    top_preds_count: int = 3,
-                    fig_title: Optional[str] = None,
-                    fig_name: Optional[str] = None
-                ) -> None:
-                    """
-                    A method that provides explanations for N top classes.
-                    :param model: Keras based Image Classification model
-                    :param image: Single image in the form of numpy array. Shape: [224, 224, 3]
-                    :param class_names_mapping: Dictionary that provides mapping between class inedex and name
-                    :param top_preds_count: Number of top predictions that we want to explain
-                    :param fig_title: Figure title
-                    :param fig_name: Output figure path
-                    :return:
-                    """
-                    
-                    image_columns = 3
-                    image_rows = math.ceil(top_preds_count / image_columns)
-                    
-                    segments_slic = slic(image, n_segments=100, compactness=30, sigma=3)
-                    
-                    def _h(z):
-                        return model.predict(preprocess_input(mask_image(z, segments_slic, image, 255)))
-                    
-                    explainer = shap.KernelExplainer(_h, np.zeros((1,100)))
-                    shap_values = explainer.shap_values(np.ones((1,100)), nsamples=1000)
-                    
-                    preds = model.predict(np.expand_dims(image, axis=0))
-                    top_preds_indexes = np.flip(np.argsort(preds))[0,:top_preds_count]
-                    top_preds_values = preds.take(top_preds_indexes)
-                    top_preds_names = np.vectorize(lambda x: class_names[x])(top_preds_indexes)
-                    
-                    plt.style.use('dark_background')
-                    fig, axes = plt.subplots(image_rows, image_columns, figsize=(image_columns * 5, image_rows * 5))
-                    [ax.set_axis_off() for ax in axes.flat]
-                    
-                    max_val = np.max([np.max(np.abs(shap_values[i][:,:-1])) for i in range(len(shap_values))])
-                    color_map = get_colormap()
-                    
-                    for i, (index, value, name, ax) in \
-                        enumerate(zip(top_preds_indexes, top_preds_values, top_preds_names, axes.flat)):
-                    
-                        m = fill_segmentation(shap_values[index][0], segments_slic)
-                        subplot_title = "{}. class: {} pred: {:.3f}".format(i + 1, name, value)
-                        ax.imshow(image / 255)
-                        ax.imshow(m, cmap=color_map, vmin=-max_val, vmax=max_val)
-                        ax.set_title(subplot_title, pad=20)
-                       
-                    if fig_title:
-                        fig.suptitle(fig_title, fontsize=30)
-                    if fig_name:
-                        plt.savefig(fig_name)
-                    plt.show()
+                #Compute distances to original image
+                import sklearn.metrics
+                original_image = np.ones(num_superpixels)[np.newaxis,:] #Perturbation with all superpixels enabled 
+                distances = sklearn.metrics.pairwise_distances(perturbations,original_image, metric='cosine').ravel()
+                print(distances.shape)
                 
-                image_example = data[2]
-                class_names = get_class_names()
-                plot_shap_top_explanations(model, image_example, class_names, top_preds_count=6, fig_title="SHAP", fig_name="viz/coco_resnet34_shap.png")
+                #Transform distances to a value between 0 an 1 (weights) using a kernel function
+                kernel_width = 0.25
+                weights = np.sqrt(np.exp(-(distances**2)/kernel_width**2)) #Kernel function
+                print(weights.shape)
+                
+                #Estimate linear model
+                from sklearn.linear_model import LinearRegression
+                class_to_explain = top_pred_classes[0] #Labrador class
+                simpler_model = LinearRegression()
+                simpler_model.fit(X=perturbations, y=predictions[:,:,class_to_explain], sample_weight=weights)
+                coeff = simpler_model.coef_[0]
+                
+                #Use coefficients from linear model to extract top features
+                num_top_features = 4
+                top_features = np.argsort(coeff)[-num_top_features:] 
+                
+                #Show only the superpixels corresponding to the top features
+                mask = np.zeros(num_superpixels) 
+                mask[top_features]= True #Activate top superpixels
+                st.image(skimage.io.imshow(perturb_image(Xi/2+0.5,mask,superpixels)))
+                
                 
 def text_xai():
     

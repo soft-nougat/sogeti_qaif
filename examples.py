@@ -94,7 +94,7 @@ def tabular_bias():
             # only execute this code when expanded + clicked
             with st.echo():
                 import seaborn as sns
-                titanic = sns.load_dataset('examples_data/titanic')
+                titanic = sns.load_dataset('titanic')
                 
                 st.write("Number of males: "+ str(titanic['sex'].value_counts()['male']))
                 st.write("Number of females: "+str(titanic['sex'].value_counts()['female']))
@@ -210,7 +210,7 @@ def tabular_bias():
             import pandas as pd
             from sklearn.model_selection import train_test_split
             
-            data = pd.read_csv("titanic.csv")
+            data = pd.read_csv("examples_data/titanic.csv")
             #del data['Unnamed: 0']
             X, y = data.iloc[:, 1:], data.iloc[:, 0]
             

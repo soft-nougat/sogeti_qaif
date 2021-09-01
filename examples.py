@@ -320,11 +320,12 @@ def text_bias():
         "A vector of words. The target describe the gender groups in which 
         fairness is intended to be measured (e.g., women, men, non-binary).">
         targets</dfn></span>.
-        <br>We implement the following metrics:
+        <br>Responsibly WE implements the following metrics:
         <li>Word Embedding Association Test (WEAT)
         <li>Bias measure and debiasing
-        <li>Clustering as classification of biased neutral words
-        <br>In the following code, we measure the gender bias of a pretrained we model.
+        <li>Clustering as classification of biased neutral words</li>
+        <br>In the following code, we measure the direct gender bias of a pretrained 
+        Responsibly WE model, we debias it and run correlations to validate the debiasing.
         """
         
         help.sub_text(exp_text)
@@ -428,8 +429,6 @@ def text_bias():
                 
                st.pyplot()
                
-               
-                               
         
 def tabular_xai():
     

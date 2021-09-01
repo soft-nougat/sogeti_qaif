@@ -260,21 +260,23 @@ def text_bias():
         help.sub_text("""<b>Packages used</b>""", 
                       alignment = "left")
         help.sub_text("""
-                      WEFE
+                      <a href = "https://github.com/ResponsiblyAI/responsibly">
+                      Responsibly</a> 
                       """, 
                       alignment = "left")
     with col3:
         help.sub_text("""<b>Example dataset</b>""", 
                       alignment = "left")
         help.sub_text("""
-                      <a href = https://github.com/datasciencedojo/datasets/blob/master/titanic.csv>
-                      TBD</a>""", 
+                      <a href = "https://data.world/jaredfern/google-news-200d">
+                      Google News</a>""", 
                       alignment = "left")
     with col4:
         help.sub_text("""<b>Similar packages</b>""", 
                       alignment = "left")
         help.sub_text("""
-                      TBD""", 
+                      <a href = "https://github.com/dccuchile/wefe">
+                      WEFE</a>""", 
                       alignment = "left")
         
     st.markdown("""---""")
@@ -296,7 +298,7 @@ def text_bias():
         
         help.sub_text(exp_text)
         
-    expander = st.beta_expander('WEFE Example', 
+    expander = st.beta_expander('Responsibly Example', 
                                 expanded=False)
 
     with expander:
@@ -306,69 +308,128 @@ def text_bias():
         <br>We will be using  
         <span style = "color:#F26531">
         <dfn title = 
-        "Word Embedding Fairness Evaluation (WEFE) is an open source library for measuring 
-        bias in word embedding models.">
-        WEFE</dfn></span> to score the bias for certain 
+        "Metrics and debiasing methods for bias (such as gender and race) in word embedding.">
+        Responsibly WE</dfn></span> to score the gender bias for certain 
         <span style = "color:#F26531">
         <dfn title = 
-        "A vector of words. The attribute words describe traits or attitudes by which 
-        a bias towards one of the social groups may be exhibited (e.g., pleasant vs. unpleasant terms).">
+        "A vector of words. The attribute words describe professions by which 
+        a bias towards one of the gender groups may be exhibited (e.g., doctor, nurse).">
         attributes</dfn></span> and 
          <span style = "color:#F26531">
         <dfn title = 
-        "A vector of words. The target words describe the social groups in which 
-        fairness is intended to be measured (e.g., women, white people, Muslims).">
-        targets</dfn></span> through running
-         <span style = "color:#F26531">
-        <dfn title = 
-        "A query studies the relationship between attributes and targets. If negative, the
-        relationship is inverted, and if positive it is direct. A score close to 0 means 
-        the relationship is not biased.">
-        queries</dfn></span>.
-        <br>WEFE implements the following metrics:
+        "A vector of words. The target describe the gender groups in which 
+        fairness is intended to be measured (e.g., women, men, non-binary).">
+        targets</dfn></span>.
+        <br>We implement the following metrics:
         <li>Word Embedding Association Test (WEAT)
-        <li>Relative Norm Distance (RND)
-        <li>Relative Negative Sentiment Bias (RNSB)
-        <li>Mean Average Cosine (MAC)
-        <brIn the following code, we measure the gender bias of word2vec using:
-        <li> A query that studies the relationship between male names and career-related words, 
-        and female names and family-related words, which we call "Male names and Female names wrt 
-        Career and Family". 
+        <li>Bias measure and debiasing
+        <li>Clustering as classification of biased neutral words
+        <br>In the following code, we measure the gender bias of a pretrained we model.
         """
         
         help.sub_text(exp_text)
         
-        button_wefe = st.button('Run WEFE Example')
+        button_res = st.button('Run Responsibly Example')
         
-        if button_wefe:
+        if button_res:
             with st.echo():
                 
-                from wefe import WordEmbeddingModel, Query, WEAT
-                import gensim.downloader as api
+               from responsibly.we import load_w2v_small
+               
+               # load a pretrained model on google news data
+               w2v_small = load_w2v_small()
                 
-                glove =  WordEmbeddingModel(api.load('glove-twitter-200'),
-                                            'glove-twitter-200')
+               # get the most similar terms from model, 
+               # exclude words related to he/him
+               she = w2v_small.most_similar(positive=['doctor', 'she'],
+                                               negative=['he'])
+               
+               
+               # get the most similar terms from model, 
+               # exclude words related to she/her
+               he = w2v_small.most_similar(positive=['doctor', 'he'],
+                                                    negative=['she'])
+               
+               # visualise data
+               import matplotlib.pyplot as plt; plt.rcdefaults()
+               import numpy as np
+               import matplotlib.pyplot as plt
                 
-                # target sets
-                male_names = ['John', 'Paul', 'Mike', 'Kevin', 'Steve', 'Greg', 'Jeff', 'Bill']
-                female_names = ['Amy', 'Joan', 'Lisa', 'Sarah', 'Diana', 'Kate', 'Ann', 'Donna']
+               names = list(k[0] for k in she)
+               values = list(k[1] for k in she)
                 
-                #attribute sets
-                career = ['executive', 'management', 'professional', 'corporation', 
-                         'salary', 'office', 'business', 'career']
-                family = ['home', 'parents', 'children', 'family', 'cousins', 'marriage',
-                         'wedding', 'relatives']
+               y_pos = np.arange(len(she))
                 
-                gender_occupation_query = Query([male_names, female_names],
-                                                [career, family],
-                                                ['Male names', 'Female names'],
-                                                ['Career', 'Family'])
+               plt.figure(figsize=(20,10))
+               plt.bar(y_pos, values, align='center', alpha=0.5)
+               plt.xticks(y_pos, names)
+               plt.ylabel('Correlation')
+               plt.title('Profession/term')
                 
-                weat = WEAT()
+               st.pyplot()
+               
+               names = list(k[0] for k in he)
+               values = list(k[1] for k in he)
                 
-                results = weat.run_query(gender_occupation_query, glove)
+               y_pos = np.arange(len(he))
                 
-                st.write(results)
+               plt.figure(figsize=(20,10))
+               plt.bar(y_pos, values, align='center', alpha=0.5)
+               plt.xticks(y_pos, names)
+               plt.ylabel('Correlation')
+               plt.title('Profession/term')
+                
+               st.pyplot()
+               
+               # get bias score and debias model
+               from responsibly.we import GenderBiasWE
+               
+               direct_bias = GenderBiasWE(w2v_small).calc_direct_bias()
+               st.write("The direct bias score is: ", direct_bias)
+               GenderBiasWE(w2v_small).debias()
+               unbiased = GenderBiasWE(w2v_small).calc_direct_bias()
+               st.write("The direct bias score after debiasing is: ", unbiased)
+               
+               # run example again
+               # get the most similar terms from model, 
+               # exclude words related to he/him
+               she = w2v_small.most_similar(positive=['doctor', 'she'],
+                                               negative=['he'])
+               
+               
+               # get the most similar terms from model, 
+               # exclude words related to she/her
+               he = w2v_small.most_similar(positive=['doctor', 'he'],
+                                                    negative=['she'])
+               
+               names = list(k[0] for k in she)
+               values = list(k[1] for k in she)
+                
+               y_pos = np.arange(len(she))
+                
+               plt.figure(figsize=(20,10))
+               plt.bar(y_pos, values, align='center', alpha=0.5)
+               plt.xticks(y_pos, names)
+               plt.ylabel('Correlation')
+               plt.title('Profession/term')
+                
+               st.pyplot()
+               
+               names = list(k[0] for k in he)
+               values = list(k[1] for k in he)
+                
+               y_pos = np.arange(len(he))
+                
+               plt.figure(figsize=(20,10))
+               plt.bar(y_pos, values, align='center', alpha=0.5)
+               plt.xticks(y_pos, names)
+               plt.ylabel('Correlation')
+               plt.title('Profession/term')
+                
+               st.pyplot()
+               
+               
+                               
         
 def tabular_xai():
     

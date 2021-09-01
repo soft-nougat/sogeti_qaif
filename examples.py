@@ -534,13 +534,11 @@ With this approach, the accuracy of a neural net is preserved.">
         Neural-Backed Decision Trees (NBDTs).</dfn></span> A standalone Streamlit
         App where you can try this out can be accessed 
         <a href = "https://share.streamlit.io/marktensensgt/streamlit_object_recognition/main.py">
-        here</a>. The demo is below. 
+        here</a>. 
         """
         
         help.sub_text(exp_text)
         
-        nbdt = open('/app/sogeti_qaif/demo_video/demo_nbdt.mp4', 'rb')
-        st.video(nbdt)
     
     expander = st.beta_expander('Model Development and Evaluation', 
                                 expanded=False)

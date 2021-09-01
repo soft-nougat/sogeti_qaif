@@ -15,4 +15,4 @@ image-classifiers==1.0.0
 lime
 nltk
 numpy==1.19.5
-wefe
+responsibly

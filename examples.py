@@ -285,14 +285,90 @@ def text_bias():
     with expander:
         
         exp_text = """
-        Word embeddings are dense vector representations of words trained from document corpora. 
-        They have become a core component of natural language processing (NLP) downstream systems 
-        because of their ability to efficiently capture semantic and syntactic relationships
-        between words. A widely reported shortcoming of word embeddings is that they are prone 
-        to inherit stereotypical social biases exhibited in the corpora on which they are trained.
+        When usng text data in AI applications, we run into a problem of feeding the semantics and 
+        meaning of text to the model as training data. In order to achieve this, 
+        <span style = "color:#F26531">
+        <dfn title = "Dense vector representations of words trained from document corpora.">
+        word embeddings</dfn></span> are used.
+        Even though they are a crucial part of NLP pipelines, they have a negative side of
+        learning bias from the text corpora they are trained on.
         """
         
         help.sub_text(exp_text)
+        
+    expander = st.beta_expander('WEFE Example', 
+                                expanded=False)
+
+    with expander:
+        
+        exp_text = """
+        <b>The method</b>
+        <br>We will be using  
+        <span style = "color:#F26531">
+        <dfn title = 
+        "Word Embedding Fairness Evaluation (WEFE) is an open source library for measuring 
+        bias in word embedding models.">
+        WEFE</dfn></span> to score the bias for certain 
+        <span style = "color:#F26531">
+        <dfn title = 
+        "A vector of words. The attribute words describe traits or attitudes by which 
+        a bias towards one of the social groups may be exhibited (e.g., pleasant vs. unpleasant terms).">
+        attributes</dfn></span> and 
+         <span style = "color:#F26531">
+        <dfn title = 
+        "A vector of words. The target words describe the social groups in which 
+        fairness is intended to be measured (e.g., women, white people, Muslims).">
+        targets</dfn></span> through running
+         <span style = "color:#F26531">
+        <dfn title = 
+        "A query studies the relationship between attributes and targets. If negative, the
+        relationship is inverted, and if positive it is direct. A score close to 0 means 
+        the relationship is not biased.">
+        queries</dfn></span>.
+        <br>WEFE implements the following metrics:
+        <li>Word Embedding Association Test (WEAT)
+        <li>Relative Norm Distance (RND)
+        <li>Relative Negative Sentiment Bias (RNSB)
+        <li>Mean Average Cosine (MAC)
+        <brIn the following code, we measure the gender bias of word2vec using:
+        <li> A query that studies the relationship between male names and career-related words, 
+        and female names and family-related words, which we call "Male names and Female names wrt 
+        Career and Family". 
+        """
+        
+        help.sub_text(exp_text)
+        
+        button_wefe = st.button('Run WEFE Example')
+        
+        if button_wefe:
+            with st.echo():
+                
+                from wefe import WordEmbeddingModel, Query, WEAT
+                import gensim.downloader as api
+                
+                glove =  WordEmbeddingModel(api.load('glove-twitter-200'),
+                                            'glove-twitter-200')
+                
+                # target sets
+                male_names = ['John', 'Paul', 'Mike', 'Kevin', 'Steve', 'Greg', 'Jeff', 'Bill']
+                female_names = ['Amy', 'Joan', 'Lisa', 'Sarah', 'Diana', 'Kate', 'Ann', 'Donna']
+                
+                #attribute sets
+                career = ['executive', 'management', 'professional', 'corporation', 
+                         'salary', 'office', 'business', 'career']
+                family = ['home', 'parents', 'children', 'family', 'cousins', 'marriage',
+                         'wedding', 'relatives']
+                
+                gender_occupation_query = Query([male_names, female_names],
+                                                [career, family],
+                                                ['Male names', 'Female names'],
+                                                ['Career', 'Family'])
+                
+                weat = WEAT()
+                
+                results = weat.run_query(gender_occupation_query, glove)
+                
+                st.write(results)
         
 def tabular_xai():
     

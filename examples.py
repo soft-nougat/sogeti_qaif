@@ -539,7 +539,7 @@ With this approach, the accuracy of a neural net is preserved.">
         
         help.sub_text(exp_text)
         
-        nbdt = open("demo_video/demo_nbdt.mp4", "rb")
+        nbdt = open('demo_video/demo_nbdt', 'rb')
         st.video(nbdt)
     
     expander = st.beta_expander('Model Development and Evaluation', 

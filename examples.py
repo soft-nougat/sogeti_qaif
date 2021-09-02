@@ -281,11 +281,8 @@ def tabular_bias():
 
                 # Show accuracy on women
                 y_pred = clf.predict(X_test_female)
-                st.write("Accuracy of the model on the 20 women: "+ str(accuracy_score(y_test_female, y_pred))+"\n")
-                # In depth look of errors
-                tn, fp, fn, tp = confusion_matrix(y_test_female, y_pred).ravel()
-                st.write("Number of False positives of 20 women: "+ str(fp))
-                st.write("Number of False negatives of 20 women: "+ str(fn))
+                st.write("Accuracy of the model on women <b>before smpling</b>: "+ str(accuracy_score(y_test_female, y_pred))+"\n",
+                         unsafe_allow_html = True)
                 
                 #show why better generalization, specifically on women with stratisfied example
                 clf = DecisionTreeClassifier()
@@ -293,8 +290,8 @@ def tabular_bias():
                 
                 # Show accuracy on women
                 y_pred = clf.predict(X_test_female)
-                st.write("Accuracy of the model on the 20 women: "+ str(accuracy_score(y_test_female, y_pred))+"\n")
-                
+                st.write("Accuracy of the model on the women <b>after sampling</b>: "+ str(accuracy_score(y_test_female, y_pred))+"\n",
+                         unsafe_allow_html = True)
 def text_bias():
     
     help.header("Text Data",

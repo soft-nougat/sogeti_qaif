@@ -166,7 +166,7 @@ def tabular_bias():
         <dfn title = "This entails filling in the missing values, removing noninformative
         variables and basic one-hot-encoding for categorical variables.">
         standard preprocessing </span></dfn> of the data so we can work with it and it is
-        ready to be inserted into a model.For now we just import the preprocessed dataset with 
+        ready to be inserted into a model. For now we just import the preprocessed dataset with 
         similar sex-ratio's as previously explored.
         """
         
@@ -181,18 +181,39 @@ def tabular_bias():
                 import pandas as pd
                 from sklearn.model_selection import train_test_split
                 
-                data = pd.read_csv("examples_data/titanic.csv")
-                #del data['Unnamed: 0']
-                X, y = data.iloc[:, 1:], data.iloc[:, 0]
+                data = pd.read_csv("examples_data/titanic_cleaned.csv")
                 
-                # Random sampling - split the dataset in train and test - force low amount 
-                # of women in trainset
-                X_train_rnd, X_test_rnd, y_train_rnd, y_test_rnd = train_test_split(X, 
-                                                                                    y, 
-                                                                                    test_size=0.33, 
-                                                                                    random_state=42)
+                ############ "Random sampling" - split the dataset in train and test - force low amount of women in trainset
+                # Note; this is not actually random, but could appear worst-case, just for illustration
                 
-                st.write(X_train_rnd['Sex'].count())
+                del data['Unnamed: 0']
+                sorted_data = data.sort_values(["Sex_female"], ascending=True)
+                X, y = sorted_data.iloc[:, 1:], data.iloc[:, 0]
+                
+                # Take first 300 males for traindata + 3 females
+                X_train_rnd = X[:200]
+                y_train_rnd = y[:200]
+                X_train_rnd = X_train_rnd.append(X.iloc[-25:-22])
+                y_train_rnd = y_train_rnd.append(y.iloc[-25:-22])
+                
+                # Take 20 females as testdata
+                X_test_female = X.tail(20)
+                y_test_female = y.tail(20)
+                
+                # Take 20 males to compare for testing
+                X_test_rnd_male = X.iloc[210:230]
+                y_test_rnd_male = y.iloc[210:230]
+                
+                ############ Stratisfied sampling - keep proportions of original data
+                # Let's keep the 20 women test-set and deduct them
+                # Use the rest of the data to train and test with stratified split
+                X_train_strat, X_test_strat, y_train_strat, y_test_strat = train_test_split( X[0:-20], y[0:-20], test_size=0.33, random_state=41, stratify=X[0:-20]['Sex_female'])
+                
+                # Check proportions after random sampling
+                st.write("Proportion of females in trainset after stratisfied sampling: "+ str())
+                st.write(len(X_train_strat[X_train_strat['Sex_female']==1])/len(X_train_strat))
+                
+                
 
     expander = st.beta_expander('Model Development', 
                                 expanded=False)
@@ -216,31 +237,63 @@ def tabular_bias():
             import pandas as pd
             from sklearn.model_selection import train_test_split
             
-            data = pd.read_csv("examples_data/titanic.csv")
-            #del data['Unnamed: 0']
-            X, y = data.iloc[:, 1:], data.iloc[:, 0]
+            data = pd.read_csv("examples_data/titanic_cleaned.csv")
             
-            # Random sampling - split the dataset in train and test - force low amount 
-            # of women in trainset
-            X_train_rnd, X_test_rnd, y_train_rnd, y_test_rnd = train_test_split(X, 
-                                                                                y, 
-                                                                                test_size=0.33, 
-                                                                                random_state=42)
+            ############ "Random sampling" - split the dataset in train and test - force low amount of women in trainset
+            # Note; this is not actually random, but could appear worst-case, just for illustration
+            
+            del data['Unnamed: 0']
+            sorted_data = data.sort_values(["Sex_female"], ascending=True)
+            X, y = sorted_data.iloc[:, 1:], data.iloc[:, 0]
+            
+            # Take first 300 males for traindata + 3 females
+            X_train_rnd = X[:200]
+            y_train_rnd = y[:200]
+            X_train_rnd = X_train_rnd.append(X.iloc[-25:-22])
+            y_train_rnd = y_train_rnd.append(y.iloc[-25:-22])
+            
+             # Take 20 females as testdata
+            X_test_female = X.tail(20)
+            y_test_female = y.tail(20)
+            
+            # Take 20 males to compare for testing
+            X_test_rnd_male = X.iloc[210:230]
+            y_test_rnd_male = y.iloc[210:230]
+            X_train_strat, X_test_strat, y_train_strat, y_test_strat = train_test_split( X[0:-20], y[0:-20], test_size=0.33, random_state=41, stratify=X[0:-20]['Sex_female'])
+            
             # only execute this code when expanded + clicked
             with st.echo():
                 from sklearn.tree import DecisionTreeClassifier
-
+                from sklearn.metrics import confusion_matrix
+                
                 def accuracy_score(y_pred, y_test):
                     a = list(y_pred)
                     b = list(y_test)
                     accuracy = len([a[i] for i in range(0, len(a)) if a[i] == b[i]]) / len(a)
-                    print(accuracy)
+                    return accuracy
                 
                 clf = DecisionTreeClassifier()
                 clf = clf.fit(X_train_rnd,y_train_rnd)
                 
-                y_pred = clf.predict(X_test_rnd)
-                st.write("Accuracy:", accuracy_score(y_test_rnd, y_pred))
+                # Show accuracy on men
+                y_pred = clf.predict(X_test_rnd_male)
+                st.write("Accuracy of the model on men: ", str(accuracy_score(y_test_rnd_male, y_pred)))
+
+                # Show accuracy on women
+                y_pred = clf.predict(X_test_female)
+                st.write("Accuracy of the model on the 20 women: "+ str(accuracy_score(y_test_female, y_pred))+"\n")
+                # In depth look of errors
+                tn, fp, fn, tp = confusion_matrix(y_test_female, y_pred).ravel()
+                st.write("Number of False positives of 20 women: "+ str(fp))
+                st.write("Number of False negatives of 20 women: "+ str(fn))
+                
+                #show why better generalization, specifically on women with stratisfied example
+                clf = DecisionTreeClassifier()
+                clf = clf.fit(X_train_strat, y_train_strat)
+                
+                # Show accuracy on women
+                y_pred = clf.predict(X_test_female)
+                st.write("Accuracy of the model on the 20 women: "+ str(accuracy_score(y_test_female, y_pred))+"\n")
                 
 def text_bias():
     

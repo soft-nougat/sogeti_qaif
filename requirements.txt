@@ -10,7 +10,7 @@ seaborn
 scikit-image
 shap
 xgboost
-keras==2.3.1
+keras==2.2.5
 image-classifiers==1.0.0
 lime
 nltk

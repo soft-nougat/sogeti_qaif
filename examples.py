@@ -27,7 +27,7 @@ def tabular_bias():
     
     st.markdown("""---""")
     
-    col1, col2, col3, col4 = st.beta_columns(4)
+    col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         help.sub_text("""<b>Keywords</b>""", 
@@ -299,7 +299,7 @@ def text_bias():
     
     st.markdown("""---""")
     
-    col1, col2, col3, col4 = st.beta_columns(4)
+    col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         help.sub_text("""<b>Keywords</b>""", 
@@ -493,7 +493,7 @@ def tabular_xai():
     
     st.markdown("""---""")
     
-    col1, col2, col3, col4 = st.beta_columns(4)
+    col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         help.sub_text("""<b>Keywords</b>""", 
@@ -672,7 +672,7 @@ def image_xai():
     
     st.markdown("""---""")
     
-    col1, col2, col3, col4 = st.beta_columns(4)
+    col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         help.sub_text("""<b>Keywords</b>""", 
@@ -850,7 +850,7 @@ def text_xai():
     
     st.markdown("""---""")
     
-    col1, col2, col3, col4 = st.beta_columns(4)
+    col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         help.sub_text("""<b>Keywords</b>""", 

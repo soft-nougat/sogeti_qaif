@@ -5,7 +5,7 @@ This is the web app that will be used to present Sogeti's golden standard in del
 ## Getting started
 
 To install the required packages:
-`pip install -r requirements.txt`
+```pip install -r requirements.txt```
 
 Then, to get the app up and running locally:
-`streamlit run qaif.py`
+```streamlit run qaif.py```

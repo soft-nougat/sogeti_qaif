@@ -13,10 +13,6 @@ and ethical requirements
 #  st.session_state.counter = 0
 
 import streamlit as st
-from PIL import Image
-import helper as help
-import principles 
-import examples
 from render import Renderer
         
 # app setup

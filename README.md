@@ -11,3 +11,14 @@ To install the required packages:
 Then, to get the app up and running locally:
 
 ```streamlit run qaif.py```
+
+The output should be something like:
+
+```
+You can now view your Streamlit app in your browser.
+
+Network URL: http://172.69.255.255:8501
+External URL: http://83.85.122.99:8501
+```
+ 
+ Enter the network URL from **your** terminal window in your browser address bar to view the app.

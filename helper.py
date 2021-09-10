@@ -98,7 +98,7 @@ def expander(expander_title,
 
     '''
     
-    expander = st.expander(expander_title, expanded=False)
+    expander = st.beta_expander(expander_title, expanded=False)
     
     with expander:
         

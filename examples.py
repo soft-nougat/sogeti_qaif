@@ -27,7 +27,7 @@ def tabular_bias():
     
     st.markdown("""---""")
     
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4 = st.beta_columns(4)
     
     with col1:
         help.sub_text("""<b>Keywords</b>""", 
@@ -66,7 +66,7 @@ def tabular_bias():
         
     st.markdown("""---""")
         
-    expander = st.expander('Data Understanding', 
+    expander = st.beta_expander('Data Understanding', 
                                 expanded=False)
 
     with expander:
@@ -126,7 +126,7 @@ def tabular_bias():
                 st.pyplot()
     
     
-    expander = st.expander('Data Preparation', 
+    expander = st.beta_expander('Data Preparation', 
                                 expanded=False)
 
     with expander:
@@ -215,7 +215,7 @@ def tabular_bias():
                 
                 
 
-    expander = st.expander('Model Development', 
+    expander = st.beta_expander('Model Development', 
                                 expanded=False)
 
     with expander:
@@ -299,7 +299,7 @@ def text_bias():
     
     st.markdown("""---""")
     
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4 = st.beta_columns(4)
     
     with col1:
         help.sub_text("""<b>Keywords</b>""", 
@@ -337,7 +337,7 @@ def text_bias():
         
     st.markdown("""---""")
     
-    expander = st.expander('Data Understading', 
+    expander = st.beta_expander('Data Understading', 
                                 expanded=False)
 
     with expander:
@@ -354,7 +354,7 @@ def text_bias():
         
         help.sub_text(exp_text)
         
-    expander = st.expander('Responsibly Example', 
+    expander = st.beta_expander('Responsibly Example', 
                                 expanded=False)
 
     with expander:
@@ -493,7 +493,7 @@ def tabular_xai():
     
     st.markdown("""---""")
     
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4 = st.beta_columns(4)
     
     with col1:
         help.sub_text("""<b>Keywords</b>""", 
@@ -526,7 +526,7 @@ def tabular_xai():
         
     st.markdown("""---""")
     
-    expander = st.expander('Data Understanding', 
+    expander = st.beta_expander('Data Understanding', 
                                 expanded=False)
 
     with expander:
@@ -541,7 +541,7 @@ def tabular_xai():
     
     
     
-    expander = st.expander('Model Development and Evaluation', 
+    expander = st.beta_expander('Model Development and Evaluation', 
                                 expanded=False)
     
     with expander:
@@ -672,7 +672,7 @@ def image_xai():
     
     st.markdown("""---""")
     
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4 = st.beta_columns(4)
     
     with col1:
         help.sub_text("""<b>Keywords</b>""", 
@@ -707,7 +707,7 @@ def image_xai():
         
     st.markdown("""---""")
     
-    expander = st.expander('NBDT Example', 
+    expander = st.beta_expander('NBDT Example', 
                                 expanded=False)
 
     with expander:
@@ -735,7 +735,7 @@ With this approach, the accuracy of a neural net is preserved.">
         st.video("https://youtu.be/cSeAhiZB8SI")
         
     
-    expander = st.expander('Lime Example', 
+    expander = st.beta_expander('Lime Example', 
                                 expanded=False)
     
     with expander:
@@ -850,7 +850,7 @@ def text_xai():
     
     st.markdown("""---""")
     
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4 = st.beta_columns(4)
     
     with col1:
         help.sub_text("""<b>Keywords</b>""", 
@@ -883,7 +883,7 @@ def text_xai():
         
     st.markdown("""---""")
     
-    expander = st.expander('LIME Explanation Example', 
+    expander = st.beta_expander('LIME Explanation Example', 
                                 expanded=False)
 
     with expander:

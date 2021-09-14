@@ -3,6 +3,11 @@ import helper as help
 import principles 
 import examples
 
+def render_app(streamlit):
+    r = Renderer(streamlit)
+
+    r.render_app()
+
 class Renderer:
     streamlit = False
 

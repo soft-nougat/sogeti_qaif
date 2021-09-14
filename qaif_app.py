@@ -13,15 +13,13 @@ and ethical requirements
 #  st.session_state.counter = 0
 
 import streamlit as st
-from render import Renderer
+from render import render_app
         
 # app setup
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
-render = Renderer(st)
-
 try:
-    render.render_app()    
+    render_app(st)    
         
 except TypeError:
      st.error("Oops, something went wrong. Please check previous steps for inconsistent input.")

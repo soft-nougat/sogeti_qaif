@@ -403,23 +403,28 @@ class Renderer:
     
 
     def render_example_ai_model_version_control(self):
+        pass
+    
+
+    def render_example_data_version_control(self):
+        help.set_bg_hack('gate1_bg.png')
+            
+        help.header("Data version control",
+                    is_sidebar = False)
+
         use_case_summary = """
-            Developing an accurate model is hard work: it requires a lot of tweaking of parameters, training, 
+            Developing an accurate model requires a lot of tweaking of parameters, training, 
             checking your output, tweaking again, training again, checking again, etc. Until we find one or more 
             configurations that meet our requirements within an acceptable error margin. The challenge here is 
             to make our results reproducible, so we can run a specific version of our model with specific 
             parameters and be sure that our output is the same every time. 
-            
+            <br><br>
             This is where data version control comes in. Built upon the same principles as \"regular\" version 
             control (e.g. Git), it allows us to save snapshots of our configurations, data, and model in a repository, as well as 
             effortlessly switch between those versions.
             """
 
         help.expander('Understanding the problem', use_case_summary)
-    
-
-    def render_example_data_version_control(self):
-        pass
 
 
     def render_dt_sidebar(self):

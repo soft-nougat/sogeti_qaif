@@ -426,6 +426,8 @@ class Renderer:
 
         help.expander('Understanding the problem', use_case_summary)
 
+        examples.dvc()
+
 
     def render_dt_sidebar(self):
         return self.streamlit.sidebar.radio("Select Data Type",

@@ -5,6 +5,7 @@ Created on Sun Aug 29 10:15:12 2021
 @author: TNIKOLIC
 """
 from __future__ import print_function
+from sklearn import model_selection
 import streamlit as st
 import streamlit.components.v1 as components
 import helper as help
@@ -1060,4 +1061,15 @@ which feature changes will have most impact on the prediction.
             html = LIME_exp.as_html()
             components.html(html, height=800)
 
+def dvc():
+    import pandas as pd
 
+    # plan for dvc:
+
+    # 1 use some dataset (e.g. titanic) to train some model
+    # 2 print output such as loss, training time, whatever and assert that they are equal to
+    #   predetermined static values
+    # 3 switch either config, data source or both
+    # 4 repeat step 2 with different static values
+
+    pass

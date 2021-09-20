@@ -5,9 +5,11 @@ Created on Sun Aug 29 10:15:12 2021
 @author: TNIKOLIC
 """
 from __future__ import print_function
+from sklearn import model_selection
 import streamlit as st
 import streamlit.components.v1 as components
 import helper as help
+import subprocess
 import shap 
 ## Imports libs
 import os
@@ -1060,4 +1062,35 @@ which feature changes will have most impact on the prediction.
             html = LIME_exp.as_html()
             components.html(html, height=800)
 
+def dvc():
+    # plan for dvc:
 
+    # 1 use some dataset (e.g. titanic) to train some model
+    # 2 print output such as loss, training time, whatever and assert that they are equal to
+    #   predetermined static values
+    # 3 switch either config, data source or both
+    # 4 repeat step 2 with different static values
+
+    expander = st.beta_expander('DVC Example', 
+                                expanded=False)
+
+    with expander:
+        with st.echo():
+            run_subprocess("pip install dvc", show_output=False)
+            run_subprocess("pip uninstall dataclasses (Python < 3.8)")
+            run_subprocess("dvc init")
+            run_subprocess("mkdir stores/blob")
+            run_subprocess("dvc remote add -d storage stores/blob")
+
+            ## If you are tracking the data on git, run the following lines of code:
+            #run_subprocess("git rm -r --cached 'examples_data/titanic_cleaned.csv'")
+            #run_subprocess("git commit -m \"stop tracking examples_data/titanic_cleaned.csv\"")
+
+
+def run_subprocess(command, show_output: bool=True):
+    array_command = command.split()
+
+    process = subprocess.run(array_command, text=show_output, capture_output=show_output)
+
+    if show_output and process.stdout:
+        st.info(process.stdout)

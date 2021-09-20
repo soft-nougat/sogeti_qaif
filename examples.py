@@ -1075,16 +1075,35 @@ def dvc():
                                 expanded=False)
 
     with expander:
+
         with st.echo():
+            # install dvc
             run_subprocess("pip install dvc", show_output=False)
             run_subprocess("pip uninstall dataclasses (Python < 3.8)")
+            # initialize
             run_subprocess("dvc init")
+
+            # make a tracking dir
             run_subprocess("mkdir stores/blob")
             run_subprocess("dvc remote add -d storage stores/blob")
 
             ## If you are tracking the data on git, run the following lines of code:
             #run_subprocess("git rm -r --cached 'examples_data/titanic_cleaned.csv'")
             #run_subprocess("git commit -m \"stop tracking examples_data/titanic_cleaned.csv\"")
+
+            # add pointer files, each pointer file will contain the md5 hash, 
+            # size and the location w.r.t to the directory which we'll be checking 
+            # into our git repository.
+            run_subprocess("dvc add examples_data/titanic_cleaned.csv")
+
+            # push the file to remote
+            run_subprocess("dvc push")
+
+            # look at the files
+            run_subprocess("ls -l -d stores/blob")
+
+            # if you want to pull changes someone's made, use pull
+            #run_subprocess("dvc pull")
 
 
 def run_subprocess(command, show_output: bool=True):

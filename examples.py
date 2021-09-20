@@ -9,6 +9,7 @@ from sklearn import model_selection
 import streamlit as st
 import streamlit.components.v1 as components
 import helper as help
+import subprocess
 import shap 
 ## Imports libs
 import os
@@ -1074,10 +1075,22 @@ def dvc():
                                 expanded=False)
 
     with expander:
-        bashCommand = "echo hello world"
-        import subprocess
-        process = subprocess.run(bashCommand.split())
-        #st.write(process)
-        
+        with st.echo():
+            run_subprocess("pip install dvc", show_output=False)
+            run_subprocess("pip uninstall dataclasses (Python < 3.8)")
+            run_subprocess("dvc init")
+            run_subprocess("mkdir stores/blob")
+            run_subprocess("dvc remote add -d storage stores/blob")
+
+            ## If you are tracking the data on git, run the following lines of code:
+            #run_subprocess("git rm -r --cached 'examples_data/titanic_cleaned.csv'")
+            #run_subprocess("git commit -m \"stop tracking examples_data/titanic_cleaned.csv\"")
 
 
+def run_subprocess(command, show_output: bool=True):
+    array_command = command.split()
+
+    process = subprocess.run(array_command, text=show_output, capture_output=show_output)
+
+    if show_output and process.stdout:
+        st.info(process.stdout)

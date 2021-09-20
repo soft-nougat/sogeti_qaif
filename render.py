@@ -312,6 +312,10 @@ class Renderer:
             
             self.render_example_model_interpretability()
 
+        elif example == 'Data version control':
+
+            self.render_example_data_version_control()
+
     
     def render_example_dataset_bias(self):
 
@@ -403,7 +407,26 @@ class Renderer:
     
 
     def render_example_data_version_control(self):
-        pass
+        help.set_bg_hack('gate1_bg.png')
+            
+        help.header("Data version control",
+                    is_sidebar = False)
+
+        use_case_summary = """
+            Developing an accurate model requires a lot of tweaking of parameters, training, 
+            checking your output, tweaking again, training again, checking again, etc. Until we find one or more 
+            configurations that meet our requirements within an acceptable error margin. The challenge here is 
+            to make our results reproducible, so we can run a specific version of our model with specific 
+            parameters and be sure that our output is the same every time. 
+            <br><br>
+            This is where data version control comes in. Built upon the same principles as \"regular\" version 
+            control (e.g. Git), it allows us to save snapshots of our configurations, data, and model in a repository, as well as 
+            effortlessly switch between those versions.
+            """
+
+        help.expander('Understanding the problem', use_case_summary)
+
+        examples.dvc()
 
 
     def render_dt_sidebar(self):

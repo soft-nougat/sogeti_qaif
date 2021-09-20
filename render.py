@@ -407,7 +407,7 @@ class Renderer:
     
 
     def render_example_data_version_control(self):
-        help.set_bg_hack('gate1_bg.png')
+        help.set_bg_hack('gate4_bg.png')
             
         help.header("Data version control",
                     is_sidebar = False)

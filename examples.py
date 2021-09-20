@@ -1062,8 +1062,6 @@ which feature changes will have most impact on the prediction.
             components.html(html, height=800)
 
 def dvc():
-    import pandas as pd
-
     # plan for dvc:
 
     # 1 use some dataset (e.g. titanic) to train some model
@@ -1072,4 +1070,14 @@ def dvc():
     # 3 switch either config, data source or both
     # 4 repeat step 2 with different static values
 
-    pass
+    expander = st.beta_expander('DVC Example', 
+                                expanded=False)
+
+    with expander:
+        bashCommand = "echo hello world"
+        import subprocess
+        process = subprocess.run(bashCommand.split())
+        #st.write(process)
+        
+
+

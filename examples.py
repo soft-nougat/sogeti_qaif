@@ -1062,7 +1062,7 @@ which feature changes will have most impact on the prediction.
             html = LIME_exp.as_html()
             components.html(html, height=800)
 
-def dvc():
+def dvc_data():
     # plan for dvc:
 
     # 1 use some dataset (e.g. titanic) to train some model
@@ -1071,39 +1071,69 @@ def dvc():
     # 3 switch either config, data source or both
     # 4 repeat step 2 with different static values
 
+    help.header("Data Version Control",
+                is_sidebar = False)
+
+    intro = """
+            Built upon the same principles as \"regular\" version 
+            control (e.g. Git), it allows us to save snapshots of 
+            our configurations, data, and model in a repository, 
+            as well as effortlessly switch between those versions.
+    """
+
+    help.expander('DVC', intro)
+
     expander = st.beta_expander('DVC Example', 
                                 expanded=False)
 
     with expander:
 
-        with st.echo():
-            # install dvc
-            run_subprocess("pip install dvc", show_output=False)
-            run_subprocess("pip uninstall dataclasses (Python < 3.8)")
-            # initialize
-            run_subprocess("dvc init")
+        exp_text = """
+        Using the Goku MlOps tutorial, we will walk you through the steps to set up
+        a DVC tracker.
+        <br><b>How DVC is initialized and used</b>: 
+        <li>1. First, you install DVC using pip
+        <li>2. Initialize DVC by creating a directory
+        <li>3. Remove github version control if necessary
+        <li>4. Add pointer files to directory, these are original files
+        <li>5. Finally, push to remote
+        """
+        
+        help.sub_text(exp_text)
+        
+        button_dvc = st.button('Run Example')
 
-            # make a tracking dir
-            run_subprocess("mkdir stores/blob")
-            run_subprocess("dvc remote add -d storage stores/blob")
+        if button_dvc:
+            with st.echo():
 
-            ## If you are tracking the data on git, run the following lines of code:
-            #run_subprocess("git rm -r --cached 'examples_data/titanic_cleaned.csv'")
-            #run_subprocess("git commit -m \"stop tracking examples_data/titanic_cleaned.csv\"")
+                
+                # install dvc
+                run_subprocess("pip install dvc", show_output=False)
+                run_subprocess("pip uninstall dataclasses (Python < 3.8)")
+                # initialize
+                run_subprocess("dvc init")
 
-            # add pointer files, each pointer file will contain the md5 hash, 
-            # size and the location w.r.t to the directory which we'll be checking 
-            # into our git repository.
-            run_subprocess("dvc add examples_data/titanic_cleaned.csv")
+                # make a tracking dir
+                run_subprocess("mkdir stores/blob")
+                run_subprocess("dvc remote add -d storage stores/blob")
 
-            # push the file to remote
-            run_subprocess("dvc push")
+                ## If you are tracking the data on git, run the following lines of code:
+                #run_subprocess("git rm -r --cached 'examples_data/titanic_cleaned.csv'")
+                #run_subprocess("git commit -m \"stop tracking examples_data/titanic_cleaned.csv\"")
 
-            # look at the files
-            run_subprocess("ls -l -d stores/blob")
+                # add pointer files, each pointer file will contain the md5 hash, 
+                # size and the location w.r.t to the directory which we'll be checking 
+                # into our git repository.
+                run_subprocess("dvc add examples_data/titanic_cleaned.csv")
 
-            # if you want to pull changes someone's made, use pull
-            #run_subprocess("dvc pull")
+                # push the file to remote
+                run_subprocess("dvc push")
+
+                # look at the files
+                run_subprocess("ls -l -d stores/blob")
+
+                # if you want to pull changes someone's made, use pull
+                #run_subprocess("dvc pull")
 
 
 def run_subprocess(command, show_output: bool=True):

@@ -409,7 +409,7 @@ class Renderer:
     def render_example_data_version_control(self):
         help.set_bg_hack('gate4_bg.png')
             
-        help.header("Data version control",
+        help.header("Version control",
                     is_sidebar = False)
 
         use_case_summary = """
@@ -418,15 +418,21 @@ class Renderer:
             configurations that meet our requirements within an acceptable error margin. The challenge here is 
             to make our results reproducible, so we can run a specific version of our model with specific 
             parameters and be sure that our output is the same every time. 
-            <br><br>
-            This is where data version control comes in. Built upon the same principles as \"regular\" version 
-            control (e.g. Git), it allows us to save snapshots of our configurations, data, and model in a repository, as well as 
-            effortlessly switch between those versions.
             """
 
         help.expander('Understanding the problem', use_case_summary)
 
-        examples.dvc()
+        versioning = self.render_dvc_sidebar()
+
+        if versioning == "Data":
+
+            examples.dvc_data()
+
+        if versioning == "Model":
+            pass
+
+        if versioning == "End to end":
+            pass
 
 
     def render_dt_sidebar(self):
@@ -434,6 +440,12 @@ class Renderer:
                                 ('Tabular',
                                  'Text', 
                                  'Images'))
+
+    def render_dvc_sidebar(self):
+        return self.streamlit.sidebar.radio("Select Versioning Type",
+                                ('Data',
+                                 'Model', 
+                                 'End to end'))
 
     def render_section_blogs(self):
         st = self.streamlit

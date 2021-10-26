@@ -637,12 +637,10 @@ coalitions.">
                 shap.dependence_plot("worst concave points", shap_values, X, 
                                      interaction_index="mean concave points")
                 st.pyplot()
-                # Generate multiple dependence plots
-                for name in X_train.columns:
-                     shap.dependence_plot(name, shap_values, X)
-                shap.dependence_plot("worst concave points", shap_values, X, 
-                                     interaction_index="mean concave points")
-                st.pyplot()
+                # Generate multiple dependence plots - duplicates previous waterfall plot, removed
+                #for name in X_train.columns:
+                     #shap.dependence_plot(name, shap_values, X)
+                     #st.pyplot()
                 st.write("<b>SHAP dependence plot</b>: analyzes the features two by two by ",
                         "suggesting a possibility to observe the interactions.",
                        unsafe_allow_html=True)
@@ -659,12 +657,12 @@ coalitions.">
                          "impact on the prediction and the magnitude of this impact.",
                       unsafe_allow_html=True)
                 # Generate Decision plot 
-                shap.decision_plot(expected_value, shap_values[79],link='logit' ,features=X.loc[79,:], feature_names=(X.columns.tolist()),show=True,title="Decision Plot")
-                st.pyplot()
-                st.write("<b>SHAP decision plot</b>: the decision plot makes it possible ",
-                         "to observe the amplitude of each change, “a trajectory” taken by",
-                         " a sample for the values of the displayed features.",
-                      unsafe_allow_html=True)              
+                #shap.decision_plot(expected_value, shap_values[79],link='logit' ,features=X.loc[79,:], feature_names=(X.columns.tolist()),show=True,title="Decision Plot")
+                #st.pyplot()
+                #st.write("<b>SHAP decision plot</b>: the decision plot makes it possible ",
+                         #"to observe the amplitude of each change, “a trajectory” taken by",
+                         #" a sample for the values of the displayed features.",
+                      #unsafe_allow_html=True)              
 
 
 def image_xai():

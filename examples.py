@@ -136,7 +136,7 @@ def tabular_bias():
         exp_dp_text = """
         <b>The goal</b>
         <br>Prepare data for model training and ensure the training dataset is not biased.
-        Ths can be achieved by the following methods:
+        This can be achieved by the following methods:
         <li><span style = "color:#F26531">
         <dfn title = 
         "Stratified random sampling is one common method that is used by researchers because it
@@ -283,7 +283,7 @@ def tabular_bias():
 
                 # Show accuracy on women
                 y_pred = clf.predict(X_test_female)
-                st.write("Accuracy of the model on women <b>before smpling</b>: "+ str(accuracy_score(y_test_female, y_pred))+"\n",
+                st.write("Accuracy of the model on women <b>before sampling</b>: "+ str(accuracy_score(y_test_female, y_pred))+"\n",
                          unsafe_allow_html = True)
                 
                 #show why better generalization, specifically on women with stratisfied example
@@ -345,7 +345,7 @@ def text_bias():
     with expander:
         
         exp_text = """
-        When usng text data in AI applications, we run into a problem of feeding the semantics and 
+        When using text data in AI applications, we run into a problem of feeding the semantics and 
         meaning of text to the model as training data. In order to achieve this, 
         <span style = "color:#F26531">
         <dfn title = "Dense vector representations of words trained from document corpora.">

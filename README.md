@@ -4,6 +4,24 @@ This is the web app that will be used to present Sogeti's golden standard in del
 
 ## Getting started
 
+Build a docker image using:
+
+```docker build . -t qaif```
+
+Then, to run a container using this image:
+
+```docker run --name qaif -p 8501:8501 qaif```
+
+For development purposes, you might want to build a dev image containing dependencies and mount the sourcecode to the container, such that the docker image has access to recent changes:
+
+```docker build . -f Dockerfile.dev  -t qaif-dev```
+```docker run --name qaif-dev -v `pwd`:/qaif -p 8501:8501 qaif-dev```
+
+
+
+
+Alternatively, if you want to run the app without using Docker:
+
 To install the required packages:
 
 ```pip install -r requirements.txt```
@@ -22,3 +40,6 @@ External URL: http://83.85.122.99:8501
 ```
  
  Enter the network URL from **your** terminal window in your browser address bar to view the app.
+
+
+

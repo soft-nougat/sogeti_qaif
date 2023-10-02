@@ -195,8 +195,8 @@ def tabular_bias():
                 # Take first 300 males for traindata + 3 females
                 X_train_rnd = X[:200]
                 y_train_rnd = y[:200]
-                X_train_rnd = X_train_rnd.append(X.iloc[-25:-22])
-                y_train_rnd = y_train_rnd.append(y.iloc[-25:-22])
+                X_train_rnd = pd.merge(X_train_rnd, X.iloc[-25:-22])
+                y_train_rnd = pd.merge(y_train_rnd, y.iloc[-25:-22])
                 
                 # Take 20 females as testdata
                 X_test_female = X.tail(20)
@@ -251,8 +251,9 @@ def tabular_bias():
             # Take first 300 males for traindata + 3 females
             X_train_rnd = X[:200]
             y_train_rnd = y[:200]
-            X_train_rnd = X_train_rnd.append(X.iloc[-25:-22])
-            y_train_rnd = y_train_rnd.append(y.iloc[-25:-22])
+            X_train_rnd = pd.merge(X_train_rnd, X.iloc[-25:-22])
+            y_train_rnd = pd.merge(y_train_rnd, y.iloc[-25:-22])
+
             
              # Take 20 females as testdata
             X_test_female = X.tail(20)
